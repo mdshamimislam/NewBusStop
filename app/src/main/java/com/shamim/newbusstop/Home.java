@@ -13,11 +13,15 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -48,10 +52,15 @@ import com.shamim.newbusstop.javafile_ic.Home_fragment_navigation_bar;
 import com.shamim.newbusstop.javafile_ic.Hospital_fragment_navigation_bar;
 import com.shamim.newbusstop.javafile_ic.Share_fragment_navigation_bar;
 
+import java.io.IOException;
+import java.util.List;
+
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
     //for map variable
+    SearchView searchView;
+    SupportMapFragment mapFragment;
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
@@ -70,6 +79,19 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
         //  map
+        searchView = findViewById(R.id.mapsearch);
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //kasjdkjasdjhabvsdbasjdbjhasbdhasdbh achjbbashc jh
+                //ajsbndiabdasjdcbasdbjhabsdjhabsdb
+                //ajsbndiabdasjdcbasdbjhabsdjhabsdb
+                //ajsbndiabdasjdcbasdbjhabsdjhabsdb
+                //ajsbndiabdasjdcbasdbjhabsdjhabsdb
+                //ajsbndiabdasjdcbasdbjhabsdjhabsdb
+            }
+        });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
@@ -100,7 +122,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         }
         //navigation bar
-        bottomNavigationView = findViewById(R.id.navigation_bar);
+       /* bottomNavigationView = findViewById(R.id.navigation_bar);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -121,7 +143,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 getSupportFragmentManager().beginTransaction().replace(R.id.navigation_bar_frame, fragment).commit();
                 return true;
             }
-        });
+        });*/
         Log.d(TAG,"Navigation botton");
 
 
@@ -133,47 +155,48 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.d(TAG,"Navigation drawer");
+        Fragment fragment=null;
         switch (item.getItemId()) {
             case R.id.profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.navigation_bar_frame,
-                        new profile()).commit();
+                fragment = new profile();
                 break;
             case R.id.allbus:
-                getSupportFragmentManager().beginTransaction().replace(R.id.navigation_bar_frame,
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new all_bus()).commit();
                 break;
             case R.id.setting:
-                getSupportFragmentManager().beginTransaction().replace(R.id.navigation_bar_frame,
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new setting()).commit();
                 break;
             case R.id.login:
-                getSupportFragmentManager().beginTransaction().replace(R.id.navigation_bar_frame,
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new login()).commit();
                 break;
             case R.id.register:
-                getSupportFragmentManager().beginTransaction().replace(R.id.navigation_bar_frame,
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new register()).commit();
                 break;
 
             case R.id.ticket:
-                getSupportFragmentManager().beginTransaction().replace(R.id.navigation_bar_frame,
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ticket()).commit();
                 break;
             case R.id.contact:
-                getSupportFragmentManager().beginTransaction().replace(R.id.navigation_bar_frame,
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new contact()).commit();
                 break;
             case R.id.logout:
-                getSupportFragmentManager().beginTransaction().replace(R.id.navigation_bar_frame,
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new logout()).commit();
                 break;
             case R.id.exit:
-                getSupportFragmentManager().beginTransaction().replace(R.id.navigation_bar_frame,
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new exit()).commit();
                 break;
 
         }
-        drawerLayout.closeDrawer(GravityCompat.START);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         return true;
 
     }
@@ -294,6 +317,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
 
+    public void restaurant(View view) {
 
+
+
+    }
+
+    public void atm(View view) {
+
+
+    }
+
+    public void hospital(View view) {
+
+
+
+    }
 }
 
