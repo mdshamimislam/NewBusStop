@@ -6,120 +6,112 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.shamim.newbusstop.Home"
     tools:openDrawer="start"
-    android:name="com.google.android.gms.maps.SupportMapFragment">
+    tools:context="com.shamim.newbusstop.Home">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="10">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/colorPrimary"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            />
-                <FrameLayout
-                    android:id="@+id/navigation_bar_frame"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="-6dp" >
-                    <SearchView
-                        android:id="@+id/mapsearch"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_above="@+id/map"
-                        android:background="@drawable/search_bg_map"
-                        android:hint="Search Location Here.."
-                        android:elevation="5dp"
-                        android:gravity="center"
-                        android:queryHint="Search Your Location" />
-                    <fragment
-                        android:id="@+id/map"
-                        android:name="com.google.android.gms.maps.SupportMapFragment"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        tools:context=".Home"
-                        android:layout_marginTop="40dp">/>
-                    </fragment>
-
-                </FrameLayout>
+        >
 
 
-
-
-
-
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/drawerlayout_head"
-        app:menu="@menu/drawer_layout"
+        <EditText
+            android:id="@+id/Location_search"
+            android:layout_marginTop="30dp"
+            android:layout_width="314dp"
+            android:layout_height="30dp"
+            android:background="@drawable/search_bg_map"
+            android:hint="Search Location Here.."
+            android:elevation="5dp"
+            android:gravity="center"
+            >
+        </EditText>
+        <ImageButton
+            android:id="@+id/search_image_Botton"
+            android:layout_marginTop="30dp"
+               android:layout_width="50dp"
+               android:layout_height="30dp"
+               android:layout_alignParentRight="true"
+               android:src="@drawable/ic_baseline_search_24"
+            android:background="@drawable/search_bg_map"
+            android:onClick="search_image_Botton"
         />
 
 
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:context=".Home"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        >
 
+
+        <fragment
+            android:layout_marginTop="60dp"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".Home"
+
+            >
+
+        </fragment>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:weightSum="3"
-            >
+            android:weightSum="3">
+
             <ImageButton
-                android:layout_weight="1"
                 android:id="@+id/restaurant_image"
                 android:layout_width="40dp"
                 android:layout_height="45dp"
+                android:layout_weight="1"
                 android:background="@mipmap/restaurant"
-                android:onClick="restaurant"
-                />
+                android:onClick="restaurant" />
 
             <ImageButton
-                android:layout_weight="1"
                 android:id="@+id/atm_image"
                 android:layout_width="50dp"
                 android:layout_height="52dp"
-                android:background="@mipmap/atm"
                 android:layout_marginLeft="55dp"
-                android:onClick="atm"/>
+                android:background="@mipmap/atm"
+                android:onClick="atm" />
+
             <ImageButton
-                android:layout_weight="1"
                 android:id="@+id/hospital_image"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@mipmap/hospital"
                 android:layout_marginLeft="55dp"
-                android:onClick="hospital"
-                />
+                android:layout_weight="1"
+                android:background="@mipmap/hospital"
+                android:onClick="hospital" />
         </LinearLayout>
+
     </RelativeLayout>
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/test3">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        />
+
+</RelativeLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/drawerlayout_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/drawerlayout_head"
+        app:menu="@menu/drawer_layout"/>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

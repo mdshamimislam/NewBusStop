@@ -12,15 +12,18 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -48,9 +51,7 @@ import com.shamim.newbusstop.drawer_layout.profile;
 import com.shamim.newbusstop.drawer_layout.register;
 import com.shamim.newbusstop.drawer_layout.setting;
 import com.shamim.newbusstop.drawer_layout.ticket;
-import com.shamim.newbusstop.javafile_ic.Home_fragment_navigation_bar;
-import com.shamim.newbusstop.javafile_ic.Hospital_fragment_navigation_bar;
-import com.shamim.newbusstop.javafile_ic.Share_fragment_navigation_bar;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -59,8 +60,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
     //for map variable
-    SearchView searchView;
-    SupportMapFragment mapFragment;
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
@@ -78,21 +77,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        //  map
-        searchView = findViewById(R.id.mapsearch);
-        searchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //kasjdkjasdjhabvsdbasjdbjhasbdhasdbh achjbbashc jh
-                //ajsbndiabdasjdcbasdbjhabsdjhabsdb
-                //ajsbndiabdasjdcbasdbjhabsdjhabsdb
-                //ajsbndiabdasjdcbasdbjhabsdjhabsdb
-                //ajsbndiabdasjdcbasdbjhabsdjhabsdb
-                //ajsbndiabdasjdcbasdbjhabsdjhabsdb
-            }
-        });
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             CheckUserLocationPermission();
@@ -101,7 +85,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 .findFragmentById(R.id.map);
              mapFragment.getMapAsync(this);
 
-        //For Used Drawerlayout
+        //For Used Drawerlayout (ToolBar)
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
@@ -111,39 +95,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.drawerlayout_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new Home_fragment_navigation_bar()).commit();
-            navigationView.setCheckedItem(R.id.homes);
-
-
-        }
-        //navigation bar
-       /* bottomNavigationView = findViewById(R.id.navigation_bar);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                Fragment fragment = null;
-                switch (menuItem.getItemId()) {
-                    case R.id.homes:
-                        fragment = new Home_fragment_navigation_bar();
-                        break;
-                    case R.id.hospital:
-                        fragment = new Hospital_fragment_navigation_bar();
-                        break;
-                    case R.id.share:
-                        fragment = new Share_fragment_navigation_bar();
-                        break;
-
-                }
-
-                getSupportFragmentManager().beginTransaction().replace(R.id.navigation_bar_frame, fragment).commit();
-                return true;
-            }
-        });*/
         Log.d(TAG,"Navigation botton");
 
 
@@ -151,53 +105,64 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
-
+    //For Drawerlayout Method
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.d(TAG,"Navigation drawer");
         Fragment fragment=null;
         switch (item.getItemId()) {
-            case R.id.profile:
-                fragment = new profile();
+            case R.id.home:
+                Intent intent = new Intent(Home.this,Home.class);
+                startActivity(intent);
                 break;
+            case R.id.profile:
+                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
+                        new profile()).commit();
+                break;
+
             case R.id.allbus:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
                         new all_bus()).commit();
                 break;
             case R.id.setting:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
                         new setting()).commit();
                 break;
             case R.id.login:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
                         new login()).commit();
                 break;
             case R.id.register:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
                         new register()).commit();
                 break;
 
             case R.id.ticket:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
                         new ticket()).commit();
                 break;
             case R.id.contact:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
                         new contact()).commit();
                 break;
             case R.id.logout:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
                         new logout()).commit();
                 break;
             case R.id.exit:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
                         new exit()).commit();
+                break;
+
+            case R.id.share:
+                Toast.makeText(this, "Share this app", Toast.LENGTH_SHORT).show();
                 break;
 
         }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+
 
     }
 
@@ -210,6 +175,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
     }
 
+    //End  Drawerlayout Method
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -333,5 +299,49 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
     }
-}
+
+    public void search_image_Botton(View view) {
+        switch (view.getId()) {
+            case R.id.search_image_Botton:
+                EditText addressField = (EditText) findViewById(R.id.Location_search);
+                String address = addressField.getText().toString();
+                List<Address> addressList = null;
+                MarkerOptions usermarkerOptions = new MarkerOptions();
+
+                if (!TextUtils.isEmpty(address)) {
+                    Geocoder geocoder = new Geocoder(this);
+                    try {
+                        addressList = geocoder.getFromLocationName(address, 1);
+                        if (addressList != null) {
+                            for (int i = 0; i < addressList.size(); i++) {
+                                Address userAddress = addressList.get(i);
+                                LatLng latLng = new LatLng(userAddress.getLatitude(), userAddress.getLongitude());
+
+                                usermarkerOptions.position(latLng);
+                                usermarkerOptions.title(address);
+                                usermarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                                mMap.addMarker(usermarkerOptions);
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                                mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+                            }
+                        }
+                        else
+                        {
+                            Toast.makeText(this, "Location not Found...", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                {
+                    Toast.makeText(this, "Please Enter any Location", Toast.LENGTH_SHORT).show();
+                }
+
+
+                break;
+        }
+    }
+    }
+
 
