@@ -1,5 +1,4 @@
 package com.shamim.newbusstop;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -47,6 +46,7 @@ import com.shamim.newbusstop.Nearby_Places.GetNearby_Place;
 import com.shamim.newbusstop.drawer_layout.all_bus;
 import com.shamim.newbusstop.drawer_layout.contact;
 import com.shamim.newbusstop.drawer_layout.exit;
+
 import com.shamim.newbusstop.drawer_layout.login;
 import com.shamim.newbusstop.drawer_layout.logout;
 import com.shamim.newbusstop.drawer_layout.profile;
@@ -121,7 +121,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(intent);
                 break;
             case R.id.profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
+                getSupportFragmentManager().beginTransaction().replace(R.id.test2,
                         new profile()).commit();
                 break;
 
@@ -134,19 +134,17 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         new setting()).commit();
                 break;
             case R.id.login:
-                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
-                        new login()).commit();
 
-                /*FragmentManager manager = getSupportFragmentManager();
+                FragmentManager manager = getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
-                login loginFragment = new login();
+               login  loginFragment = new login();
                 transaction.replace(R.id.test3, loginFragment);
                 transaction.addToBackStack(null);
-                transaction.commit();*/
+                transaction.commit();
                 break;
             case R.id.register:
-                Intent register = new Intent(Home.this, Choose_Option.class);
-                startActivity(register);
+                getSupportFragmentManager().beginTransaction().replace(R.id.test2,
+                        new register()).commit();
                 break;
 
             case R.id.ticket:

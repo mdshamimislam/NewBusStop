@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/test2"
+    tools:context="com.shamim.newbusstop.Home">
+<androidx.drawerlayout.widget.DrawerLayout
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
     tools:context="com.shamim.newbusstop.Home">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -97,17 +101,16 @@
               />
         </LinearLayout>
 
+        <RelativeLayout
+            android:id="@+id/test3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        </RelativeLayout>
+
     </RelativeLayout>
 
-
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/test3">
-
-
-
-</RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/drawerlayout_view"
@@ -116,6 +119,5 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/drawerlayout_head"
         app:menu="@menu/drawer_layout"/>
-
-
 </androidx.drawerlayout.widget.DrawerLayout>
+</RelativeLayout>

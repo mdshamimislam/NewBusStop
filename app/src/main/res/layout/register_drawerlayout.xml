@@ -1,16 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/colorAccent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register Fragment"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"
-        android:background="@color/White"
-        android:textStyle="bold"/>
+    tools:context="com.shamim.newbusstop.Choose_Option">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/flashing_background"
+        android:orientation="vertical"
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="400dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_weight="0.1"
+            android:background="@color/Silver"
+            android:gravity="center"
+
+            android:text="Choose Your Option"
+            android:textColor="@color/White"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/user"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"
+            android:layout_weight="0.2"
+            android:background="@color/Red"
+            android:gravity="center"
+            android:onClick="user"
+            android:text="I am User"
+            android:textColor="@color/White"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text" />
+
+
+
+        <Button
+            android:id="@+id/driver"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_weight="0.2"
+            android:background="@color/White"
+            android:gravity="center"
+            android:onClick="driver"
+            android:text="I am a Driver"
+            android:textColor="@color/Red"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user" />
+
+        <Button
+            android:id="@+id/admin"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_weight="0.2"
+            android:background="@color/TEAL"
+            android:gravity="center"
+            android:onClick="admin"
+            android:text=" Admin"
+            android:textColor="@color/White"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/driver" />
+
+       <Button
+            android:id="@+id/controller"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"
+            android:layout_weight="0.2"
+            android:background="@color/Red"
+            android:gravity="center"
+            android:onClick="admin"
+            android:text="Controller of Apps"
+            android:textColor="@color/White"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text" />
+        <Button
+            android:id="@+id/subadmin"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_weight="0.2"
+            android:background="@color/White"
+            android:gravity="center"
+            android:onClick="admin"
+            android:text="SUB Admin"
+            android:textColor="@color/Red"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/controller" />
+
+        <Button
+            android:id="@+id/admin1"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_weight="0.2"
+            android:background="@color/TEAL"
+            android:gravity="center"
+            android:onClick="admin"
+            android:text=" Admin"
+            android:textColor="@color/White"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/subadmin" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/backhome"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_weight="0.3"
+        android:textSize="20sp"
+        android:onClick="backtoHome"
+        android:layout_alignParentBottom="true"
+        android:text="Back to Home" />
 
 
 </RelativeLayout>
