@@ -13,9 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            />
 
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/Location_search"
             android:layout_marginTop="30dp"
             android:layout_width="314dp"
@@ -24,8 +33,9 @@
             android:hint="Search Location Here.."
             android:elevation="5dp"
             android:gravity="center"
+            android:imeOptions="actionSearch"
             >
-        </EditText>
+        </AutoCompleteTextView>
         <ImageButton
             android:id="@+id/search_image_Botton"
             android:layout_marginTop="30dp"
@@ -65,7 +75,8 @@
                 android:layout_height="45dp"
                 android:layout_weight="1"
                 android:background="@mipmap/restaurant"
-                android:onClick="restaurant" />
+                android:onClick="restaurant"
+                 />
 
             <ImageButton
                 android:id="@+id/atm_image"
@@ -73,7 +84,8 @@
                 android:layout_height="52dp"
                 android:layout_marginLeft="55dp"
                 android:background="@mipmap/atm"
-                android:onClick="atm" />
+
+                 />
 
             <ImageButton
                 android:id="@+id/hospital_image"
@@ -82,7 +94,7 @@
                 android:layout_marginLeft="55dp"
                 android:layout_weight="1"
                 android:background="@mipmap/hospital"
-                android:onClick="hospital" />
+              />
         </LinearLayout>
 
     </RelativeLayout>
@@ -93,15 +105,7 @@
     android:layout_height="match_parent"
     android:id="@+id/test3">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="@color/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        />
+
 
 </RelativeLayout>
 

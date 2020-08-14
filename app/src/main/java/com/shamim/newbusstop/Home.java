@@ -10,6 +10,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.content.Intent;
@@ -24,7 +26,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -42,6 +43,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.shamim.newbusstop.Nearby_Places.GetNearby_Place;
 import com.shamim.newbusstop.drawer_layout.all_bus;
 import com.shamim.newbusstop.drawer_layout.contact;
 import com.shamim.newbusstop.drawer_layout.exit;
@@ -60,15 +62,20 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
     //for map variable
+    EditText addressField;
+    String  url =null;
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
     private Location lastLocation;
     private Marker CurrentUserLocationMarker;
     private static final int Request_User_Location_code = 99;
+    private double latitude,longitude;
+    private int proximityRadius=10000;
+
 
     private DrawerLayout drawerLayout;
-    String TAG ="drawerlayout";
+    String TAG = "drawerlayout";
     //navigation bar
     private BottomNavigationView bottomNavigationView;
 
@@ -77,13 +84,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
+        addressField = (EditText) findViewById(R.id.Location_search);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             CheckUserLocationPermission();
         }
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-             mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this);
 
         //For Used Drawerlayout (ToolBar)
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -98,9 +105,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         NavigationView navigationView = findViewById(R.id.drawerlayout_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Log.d(TAG,"Navigation botton");
-
-
+        Log.d(TAG, "Navigation botton");
 
 
     }
@@ -108,11 +113,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     //For Drawerlayout Method
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Log.d(TAG,"Navigation drawer");
-        Fragment fragment=null;
+        Log.d(TAG, "Navigation drawer");
+        Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.home:
-                Intent intent = new Intent(Home.this,Home.class);
+                Intent intent = new Intent(Home.this, Home.class);
                 startActivity(intent);
                 break;
             case R.id.profile:
@@ -131,10 +136,17 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.login:
                 getSupportFragmentManager().beginTransaction().replace(R.id.test3,
                         new login()).commit();
+
+                /*FragmentManager manager = getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                login loginFragment = new login();
+                transaction.replace(R.id.test3, loginFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();*/
                 break;
             case R.id.register:
-                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
-                        new register()).commit();
+                Intent register = new Intent(Home.this, Choose_Option.class);
+                startActivity(register);
                 break;
 
             case R.id.ticket:
@@ -201,6 +213,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     @Override
     public void onLocationChanged(Location location) {
+        latitude=location.getLatitude();
+        longitude=location.getLongitude();
         lastLocation = location;
         if (CurrentUserLocationMarker != null) {
             CurrentUserLocationMarker.remove();
@@ -219,7 +233,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
 
 
-
     }
 
     @Override
@@ -232,40 +245,35 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
     }
 
-        public Boolean CheckUserLocationPermission() {
+    public Boolean CheckUserLocationPermission() {
 
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Request_User_Location_code);
-                } else {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Request_User_Location_code);
-                }
-                return false;
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Request_User_Location_code);
             } else {
-                return true;
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, Request_User_Location_code);
             }
+            return false;
 
+        } else {
+            return true;
         }
+
+    }
 
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case Request_User_Location_code:
-                if (grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
-                {
-                    if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED)
-                    {
-                        if (googleApiClient==null)
-                        {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        if (googleApiClient == null) {
                             buildGoogleApiClient();
                         }
                         mMap.setMyLocationEnabled(true);
                     }
-                }
-                else {
+                } else {
                     Toast.makeText(this, "Permission Denied.....", Toast.LENGTH_SHORT).show();
                 }
                 return;
@@ -284,7 +292,17 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
     public void restaurant(View view) {
+       /* String restaurant="restaurant";
+        Object transferData[] = new Object[2];
+        GetNearby_Place getNearby_place=new GetNearby_Place();
+        mMap.clear();
+        String url = getUrl(latitude, longitude, restaurant);
+        transferData[0] = mMap;
+        transferData[1] = url;
 
+        getNearby_place.execute(transferData);
+        Toast.makeText(this, "Searching for Nearby restaurant...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Showing Nearby restaurant...", Toast.LENGTH_SHORT).show();*/
 
 
     }
@@ -297,51 +315,115 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     public void hospital(View view) {
 
 
-
     }
 
     public void search_image_Botton(View view) {
-        switch (view.getId()) {
+        String hospital = "hospital", school = "school", restaurant = "restaurant";
+        Object transferData[] = new Object[2];
+        GetNearby_Place getNearbyPlaces = new GetNearby_Place();
+
+
+        switch (view.getId())
+        {
             case R.id.search_image_Botton:
                 EditText addressField = (EditText) findViewById(R.id.Location_search);
                 String address = addressField.getText().toString();
-                List<Address> addressList = null;
-                MarkerOptions usermarkerOptions = new MarkerOptions();
 
-                if (!TextUtils.isEmpty(address)) {
+                List<Address> addressList = null;
+                MarkerOptions userMarkerOptions = new MarkerOptions();
+
+                if (!TextUtils.isEmpty(address))
+                {
                     Geocoder geocoder = new Geocoder(this);
-                    try {
+
+                    try
+                    {
                         addressList = geocoder.getFromLocationName(address, 1);
-                        if (addressList != null) {
-                            for (int i = 0; i < addressList.size(); i++) {
+
+                        if (addressList != null)
+                        {
+                            for (int i=0; i<addressList.size(); i++)
+                            {
                                 Address userAddress = addressList.get(i);
                                 LatLng latLng = new LatLng(userAddress.getLatitude(), userAddress.getLongitude());
 
-                                usermarkerOptions.position(latLng);
-                                usermarkerOptions.title(address);
-                                usermarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                                mMap.addMarker(usermarkerOptions);
+                                userMarkerOptions.position(latLng);
+                                userMarkerOptions.title(address);
+                                userMarkerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                                mMap.addMarker(userMarkerOptions);
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                                 mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
                             }
                         }
                         else
                         {
-                            Toast.makeText(this, "Location not Found...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, "Location not found...", Toast.LENGTH_SHORT).show();
                         }
-                    } catch (IOException e) {
+                    }
+                    catch (IOException e)
+                    {
                         e.printStackTrace();
                     }
                 }
                 else
                 {
-                    Toast.makeText(this, "Please Enter any Location", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "please write any location name...", Toast.LENGTH_SHORT).show();
                 }
+                break;
 
 
+            case R.id.hospital_image:
+                Log.d(TAG,"Hospital"+""+hospital);
+                mMap.clear();
+                String url = getUrl(latitude, longitude, hospital);
+                transferData[0] = mMap;
+                transferData[1] = url;
+
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Searching for Nearby Hospitals...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing Nearby Hospitals...", Toast.LENGTH_SHORT).show();
+                break;
+
+
+            case R.id.atm_image:
+                mMap.clear();
+                url = getUrl(latitude, longitude, school);
+                transferData[0] = mMap;
+                transferData[1] = url;
+
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Searching for Nearby Schools...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing Nearby Schools...", Toast.LENGTH_SHORT).show();
+                break;
+
+
+            case R.id.restaurant_image:
+                mMap.clear();
+                url = getUrl(latitude, longitude, restaurant);
+                transferData[0] = mMap;
+                transferData[1] = url;
+
+                getNearbyPlaces.execute(transferData);
+                Toast.makeText(this, "Searching for Nearby Restaurants...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Showing Nearby Restaurants...", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
-    }
+   private String getUrl(double latitude, double longitude, String nearbyPlace)
+   {
+           StringBuilder googleURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+           googleURL.append("location=" + latitude + "," + longitude);
+           googleURL.append("&radius=" + proximityRadius);
+           googleURL.append("&type=" + nearbyPlace);
+           googleURL.append("&sensor=true");
+           googleURL.append("&key=" + "AIzaSyDtIWXQDUA1ufc_Vff3qbz522DnZ26Nk9w");
+
+           Log.d("GoogleMapsActivity", "url = " + googleURL.toString());
+
+           return googleURL.toString();
+       }
+
+   }
+
 
 
