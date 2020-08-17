@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Driverresgistration">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="8"
+    android:orientation="vertical">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="7"
+        android:background="@drawable/flashing_background">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:gravity="center"
+            android:text="Driver Registration"
+            android:textColor="@color/Red"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <EditText
+            android:id="@+id/fullname"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/search_bg_map"
+            android:drawableLeft="@drawable/ic_baseline_person_24"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Enter Your Full Name"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/Black"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/search_bg_map"
+            android:drawableLeft="@drawable/email_ic"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="example@gamil.com"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/Black"
+            android:textColorHint="@color/Black"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fullname" />
+
+        <EditText
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="44dp"
+            android:background="@drawable/search_bg_map"
+            android:drawableLeft="@drawable/phone_ic"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Enter valid Phone Number"
+            android:inputType="phone"
+            android:textColor="@color/Black"
+            android:textColorHint="@color/Black"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/search_bg_map"
+            android:drawableLeft="@drawable/ic_baseline_lock_24"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Enter Password"
+            android:inputType="textPassword"
+            android:textColor="@color/Black"
+            android:textColorHint="@color/Black"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phone" />
+
+        <EditText
+            android:id="@+id/password1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/search_bg_map"
+            android:drawableLeft="@drawable/ic_baseline_lock_24"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Enter Conform Password"
+            android:inputType="textPassword"
+            android:textColor="@color/Black"
+            android:textColorHint="@color/Black"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password" />
+
+        <EditText
+            android:id="@+id/license"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="44dp"
+            android:background="@drawable/search_bg_map"
+            android:drawableLeft="@drawable/driver_license_ic"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Enter valid Driving license"
+            android:inputType="textPersonName"
+            android:textColor="@color/Black"
+            android:textColorHint="@color/Black"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password1" />
+
+        <EditText
+            android:id="@+id/nid"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="44dp"
+            android:background="@drawable/search_bg_map"
+            android:drawableLeft="@drawable/ic_nid"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Enter valid NID Number"
+            android:inputType="phone"
+            android:textColor="@color/Black"
+            android:textColorHint="@color/Black"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/license" />
+
+        <EditText
+            android:id="@+id/company"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="44dp"
+            android:background="@drawable/search_bg_map"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Enter Company Name of Bus"
+            android:inputType="textPersonName"
+            android:textColor="@color/Black"
+            android:textColorHint="@color/Black"
+            android:textSize="25dp"
+            android:drawableLeft="@drawable/ic_bus1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nid" />
+
+        <Button
+            android:id="@+id/signup"
+            android:layout_width="172dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/search_bg_map"
+            android:text="Sign Up"
+            android:textColor="@color/TEAL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/company" />
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="172dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/search_bg_map"
+            android:text="Cancel"
+            android:textColor="@color/Red"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/signup"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/company" />
+
+        <Button
+            android:id="@+id/back"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="180dp"
+            android:layout_marginBottom="8dp"
+            android:text="Back to home"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/company" />
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="10dp"
+            android:foregroundGravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:srcCompat="@drawable/ic_profile"
+            tools:ignore="VectorDrawableCompat" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>
+    </ScrollView>

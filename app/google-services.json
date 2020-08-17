@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "965341372691",
+    "firebase_url": "https://newbusstop-7239d.firebaseio.com",
+    "project_id": "newbusstop-7239d",
+    "storage_bucket": "newbusstop-7239d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965341372691:android:63ffe6aa8bb53a56b0fae6",
+        "android_client_info": {
+          "package_name": "com.shamim.newbusstop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "965341372691-rlbob9lih4cjkpmi29rsgm609b785g52.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2iVtnmM_m93jbjyVWCINhZ9FjUO4Q3Gw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965341372691-rlbob9lih4cjkpmi29rsgm609b785g52.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,85 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.shamim.newbusstop.Choose_Option">
-
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:orientation="vertical"
-       android:weightSum="4"
-       android:background="@drawable/flashing_background">
-       <Button
-           android:layout_weight="0.1"
-           android:layout_width="400dp"
-           android:layout_height="80dp"
-           android:layout_gravity="center"
-           android:gravity="center"
-           android:text="Choose Your Option"
-           android:textSize="30sp"
-           android:background="@color/Silver"
-           android:textColor="@color/White"
-           />
-       <Button
-           android:layout_weight="0.2"
-           android:id="@+id/user"
-           android:layout_width="250dp"
-           android:layout_height="60dp"
-           android:layout_gravity="center"
-           android:gravity="center"
-           android:textSize="20sp"
-           android:text="I am User"
-           android:textColor="@color/White"
-           android:background="@color/Red"
-           android:layout_marginTop="150dp"
-           android:onClick="user"
-           />
-
-       <Button
-           android:layout_weight="0.2"
-           android:id="@+id/driver"
-           android:layout_width="250dp"
-           android:layout_height="60dp"
-           android:layout_gravity="center"
-           android:gravity="center"
-           android:textSize="20sp"
-           android:text="I am a Driver"
-           android:textColor="@color/Red"
-           android:background="@color/White"
-           android:layout_marginTop="10dp"
-           android:onClick="driver"
-           />
-       <Button
-           android:layout_weight="0.2"
-           android:id="@+id/admin"
-           android:layout_width="250dp"
-           android:layout_height="60dp"
-           android:layout_gravity="center"
-           android:gravity="center"
-           android:textSize="20sp"
-           android:text="I am a Admin"
-           android:textColor="@color/White"
-           android:background="@color/TEAL"
-           android:layout_marginTop="10dp"
-           android:onClick="admin"
-
-           />
-
-
-
-
-   </LinearLayout>
-    <Button
-        android:id="@+id/backhome"
-        android:layout_width="match_parent"
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.3"
-        android:textSize="20sp"
-        android:onClick="backtoHome"
-        android:layout_alignParentBottom="true"
-        android:text="Back to Home" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/Red"/>
 
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

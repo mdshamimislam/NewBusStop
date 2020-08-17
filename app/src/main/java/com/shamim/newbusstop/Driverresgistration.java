@@ -2,6 +2,8 @@ package com.shamim.newbusstop;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -27,6 +29,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.shamim.newbusstop.drawer_layout.login;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -112,14 +115,6 @@ public class Driverresgistration extends AppCompatActivity implements View.OnCli
                     Log.d(TAG, "Eamil Null" + " " + Email);
                 }
 
-
-                /*else if (!Email.equals(email+"@"))
-                {
-                    Toast.makeText(Driverresgistration.this, "Please Enter Valid Email", Toast.LENGTH_SHORT).show();
-
-                    Log.d(TAG,"Email"+" "+Email);
-                }*/
-
                 else if (Phone.isEmpty()) {
                     Toast.makeText(Driverresgistration.this, "Please Enter Your Phone Number", Toast.LENGTH_SHORT).show();
 
@@ -202,9 +197,14 @@ public class Driverresgistration extends AppCompatActivity implements View.OnCli
 
                                                 upload_image();
 
-                                                Intent success = new Intent(Driverresgistration.this, Home.class);
+                                                FragmentManager manager = getSupportFragmentManager();
+                                                FragmentTransaction transaction = manager.beginTransaction();
+                                                login loginFragment = new login();
+                                                transaction.replace(R.id.test2, loginFragment);
+                                                transaction.addToBackStack(null);
+                                                transaction.commit();
 
-                                                startActivity(success);
+
                                                 Toast.makeText(Driverresgistration.this, "Registration is Complete ", Toast.LENGTH_SHORT).show();
 
 

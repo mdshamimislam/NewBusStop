@@ -1,4 +1,5 @@
 package com.shamim.newbusstop;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -46,7 +47,6 @@ import com.shamim.newbusstop.Nearby_Places.GetNearby_Place;
 import com.shamim.newbusstop.drawer_layout.all_bus;
 import com.shamim.newbusstop.drawer_layout.contact;
 import com.shamim.newbusstop.drawer_layout.exit;
-
 import com.shamim.newbusstop.drawer_layout.login;
 import com.shamim.newbusstop.drawer_layout.logout;
 import com.shamim.newbusstop.drawer_layout.profile;
@@ -54,26 +54,21 @@ import com.shamim.newbusstop.drawer_layout.register;
 import com.shamim.newbusstop.drawer_layout.setting;
 import com.shamim.newbusstop.drawer_layout.ticket;
 
-
 import java.io.IOException;
 import java.util.List;
 
-public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     //for map variable
     EditText addressField;
-    String  url =null;
+    String url = null;
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
     private Location lastLocation;
     private Marker CurrentUserLocationMarker;
     private static final int Request_User_Location_code = 99;
-    private double latitude,longitude;
-    private int proximityRadius=10000;
-
-
+    private double latitude, longitude;
+    private int proximityRadius = 10000;
     private DrawerLayout drawerLayout;
     String TAG = "drawerlayout";
     //navigation bar
@@ -130,21 +125,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                         new all_bus()).commit();
                 break;
             case R.id.setting:
-                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
+                getSupportFragmentManager().beginTransaction().replace(R.id.test2,
                         new setting()).commit();
                 break;
             case R.id.login:
-
                 FragmentManager manager = getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
-               login  loginFragment = new login();
-                transaction.replace(R.id.test3, loginFragment);
+                login loginFragment = new login();
+                transaction.replace(R.id.test2, loginFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
                 break;
             case R.id.register:
                 getSupportFragmentManager().beginTransaction().replace(R.id.test2,
                         new register()).commit();
+
                 break;
 
             case R.id.ticket:
@@ -211,8 +206,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     @Override
     public void onLocationChanged(Location location) {
-        latitude=location.getLatitude();
-        longitude=location.getLongitude();
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
         lastLocation = location;
         if (CurrentUserLocationMarker != null) {
             CurrentUserLocationMarker.remove();
@@ -321,8 +316,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         GetNearby_Place getNearbyPlaces = new GetNearby_Place();
 
 
-        switch (view.getId())
-        {
+        switch (view.getId()) {
             case R.id.search_image_Botton:
                 EditText addressField = (EditText) findViewById(R.id.Location_search);
                 String address = addressField.getText().toString();
@@ -330,18 +324,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 List<Address> addressList = null;
                 MarkerOptions userMarkerOptions = new MarkerOptions();
 
-                if (!TextUtils.isEmpty(address))
-                {
+                if (!TextUtils.isEmpty(address)) {
                     Geocoder geocoder = new Geocoder(this);
 
-                    try
-                    {
+                    try {
                         addressList = geocoder.getFromLocationName(address, 1);
 
-                        if (addressList != null)
-                        {
-                            for (int i=0; i<addressList.size(); i++)
-                            {
+                        if (addressList != null) {
+                            for (int i = 0; i < addressList.size(); i++) {
                                 Address userAddress = addressList.get(i);
                                 LatLng latLng = new LatLng(userAddress.getLatitude(), userAddress.getLongitude());
 
@@ -352,26 +342,20 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                                 mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
                             }
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(this, "Location not found...", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                    catch (IOException e)
-                    {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                else
-                {
+                } else {
                     Toast.makeText(this, "please write any location name...", Toast.LENGTH_SHORT).show();
                 }
                 break;
 
 
             case R.id.hospital_image:
-                Log.d(TAG,"Hospital"+""+hospital);
+                Log.d(TAG, "Hospital" + "" + hospital);
                 mMap.clear();
                 String url = getUrl(latitude, longitude, hospital);
                 transferData[0] = mMap;
@@ -407,21 +391,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
         }
     }
-   private String getUrl(double latitude, double longitude, String nearbyPlace)
-   {
-           StringBuilder googleURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-           googleURL.append("location=" + latitude + "," + longitude);
-           googleURL.append("&radius=" + proximityRadius);
-           googleURL.append("&type=" + nearbyPlace);
-           googleURL.append("&sensor=true");
-           googleURL.append("&key=" + "AIzaSyDtIWXQDUA1ufc_Vff3qbz522DnZ26Nk9w");
 
-           Log.d("GoogleMapsActivity", "url = " + googleURL.toString());
+    private String getUrl(double latitude, double longitude, String nearbyPlace) {
+        StringBuilder googleURL = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        googleURL.append("location=" + latitude + "," + longitude);
+        googleURL.append("&radius=" + proximityRadius);
+        googleURL.append("&type=" + nearbyPlace);
+        googleURL.append("&sensor=true");
+        googleURL.append("&key=" + "AIzaSyDtIWXQDUA1ufc_Vff3qbz522DnZ26Nk9w");
 
-           return googleURL.toString();
-       }
+        Log.d("GoogleMapsActivity", "url = " + googleURL.toString());
 
-   }
+        return googleURL.toString();
+    }
+
+}
 
 
 
