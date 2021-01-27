@@ -9,10 +9,9 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.shamim.newbusstop.Driverresgistration;
+import com.shamim.newbusstop.Registration;
 import com.shamim.newbusstop.Home;
 import com.shamim.newbusstop.R;
-import com.shamim.newbusstop.User_Registration;
 
 public class register extends Fragment implements View.OnClickListener {
     Button user, driver, admin, controller, subadmin, admin1, backhome;
@@ -59,23 +58,20 @@ public class register extends Fragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.user:
 
-                Intent intent = new Intent(getActivity(), User_Registration.class);
-                startActivity(intent);
+                Intent intent = new Intent(getActivity(), Registration.class);
+                intent.putExtra("user_type","user");
 
+                startActivity(intent);
 
                 break;
             case R.id.admin:
                 controller.setVisibility(View.VISIBLE);
                 controller.setEnabled(true);
-
                 admin1.setVisibility(View.VISIBLE);
                 admin1.setEnabled(true);
 
                 subadmin.setVisibility(View.VISIBLE);
                 subadmin.setEnabled(true);
-
-
-
                 admin.setVisibility(View.GONE);
                 admin.setEnabled(false);
 
@@ -94,14 +90,23 @@ public class register extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.driver:
-                Intent intent1 = new Intent(getActivity(), Driverresgistration.class);
+
+                Intent intent1 = new Intent(getActivity(), Registration.class);
+                intent1.putExtra("user_type","driver");
                 startActivity(intent1);
                 break;
 
 
             case R.id.admin1:
-                Intent admin = new Intent(getActivity(), Driverresgistration.class);
+                Intent admin = new Intent(getActivity(), Registration.class);
+                admin.putExtra("user_type","admin1");
                 startActivity(admin);
+                break;
+
+            case R.id.subadmin:
+                Intent subadmin = new Intent(getActivity(), Registration.class);
+                subadmin.putExtra("user_type","subadmin");
+                startActivity(subadmin);
                 break;
         }
 

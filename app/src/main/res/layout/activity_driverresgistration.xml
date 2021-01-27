@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Driverresgistration">
+    tools:context=".Registration">
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/White"
     android:weightSum="8"
     android:orientation="vertical">
 
@@ -17,21 +18,51 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="7"
-        android:background="@drawable/flashing_background">
+        android:layout_weight="7">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                android:background="@drawable/header"
+                tools:ignore="MissingConstraints" />
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="225dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:text="Click"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="320dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:text="For Image"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="100dp"
+            android:textColor="@color/colorPrimaryDark"
             android:gravity="center"
-            android:text="Driver Registration"
-            android:textColor="@color/Red"
+            android:text="Registration"
             android:textSize="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
 
         <EditText
@@ -50,7 +81,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+            app:layout_constraintTop_toBottomOf="@+id/title_text" />
 
         <EditText
             android:id="@+id/email"
@@ -166,6 +197,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="44dp"
             android:background="@drawable/search_bg_map"
+            android:drawableLeft="@drawable/ic_bus1"
             android:ems="10"
             android:gravity="center"
             android:hint="Enter Company Name of Bus"
@@ -173,13 +205,45 @@
             android:textColor="@color/Black"
             android:textColorHint="@color/Black"
             android:textSize="25dp"
-            android:drawableLeft="@drawable/ic_bus1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nid" />
 
         <Button
-            android:id="@+id/signup"
+            android:id="@+id/driver_singup"
+            android:layout_width="172dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/search_bg_map"
+            android:text="Sign Up"
+            android:textColor="@color/TEAL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/company" />
+
+        <Button
+            android:id="@+id/subadmin_singup"
+            android:layout_width="172dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/search_bg_map"
+            android:text="Sign Up"
+            android:textColor="@color/TEAL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/company" />
+
+        <Button
+            android:id="@+id/user_signup"
+            android:layout_width="172dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/search_bg_map"
+            android:text="Sign Up"
+            android:textColor="@color/TEAL"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/company" />
+
+        <Button
+            android:id="@+id/admin_signup"
             android:layout_width="172dp"
             android:layout_height="50dp"
             android:layout_marginTop="50dp"
@@ -205,16 +269,17 @@
 
         <Button
             android:id="@+id/back"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="180dp"
-            android:layout_marginBottom="8dp"
+            android:layout_width="175dp"
+            android:layout_height="68dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="100dp"
+            android:gravity="center"
             android:text="Back to home"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/company" />
+            app:layout_constraintTop_toBottomOf="@+id/company"
+            app:layout_constraintVertical_bias="0.387" />
 
         <ImageView
             android:id="@+id/profile_image"
@@ -228,6 +293,43 @@
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:srcCompat="@drawable/ic_profile"
             tools:ignore="VectorDrawableCompat" />
+
+
+        <EditText
+            android:id="@+id/title_text"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:textSize="20dp"
+            android:layout_toRightOf="@+id/profile_image"
+            android:hint="Enter Image Name"
+            android:background="@drawable/search_bg_map"
+            android:gravity="center"
+            android:textColorHint="@color/Black"
+            app:layout_constraintBottom_toTopOf="@+id/fullname"
+            app:layout_constraintTop_toBottomOf="@+id/profile_image"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="-28dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/footer"
+            app:layout_constraintTop_toBottomOf="@+id/back"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="0dp"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="110dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/company" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

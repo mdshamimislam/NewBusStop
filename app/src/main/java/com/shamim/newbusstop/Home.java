@@ -1,5 +1,4 @@
 package com.shamim.newbusstop;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -14,7 +13,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -41,6 +43,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.shamim.newbusstop.Nearby_Places.GetNearby_Place;
@@ -55,13 +61,17 @@ import com.shamim.newbusstop.drawer_layout.setting;
 import com.shamim.newbusstop.drawer_layout.ticket;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     //for map variable
-    EditText addressField;
-    String url = null;
+
     private GoogleMap mMap;
+    private String destination, requestService;
+
+    private LatLng destinationLatLng;
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
     private Location lastLocation;
@@ -73,13 +83,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     String TAG = "drawerlayout";
     //navigation bar
     private BottomNavigationView bottomNavigationView;
-
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        addressField = (EditText) findViewById(R.id.Location_search);
+        sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+           String usertype= sharedPref.getString("userType","NA");
+           String drivertype = sharedPref.getString("userType","NA");
+
+
+        Toast.makeText(this,usertype, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,drivertype, Toast.LENGTH_SHORT).show();
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             CheckUserLocationPermission();
         }
@@ -103,6 +121,35 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         Log.d(TAG, "Navigation botton");
 
 
+
+        Places.initialize(getApplicationContext(), "mykey", Locale.US);
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        // Specify the types of place data to return.
+        assert autocompleteFragment != null;
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull com.google.android.libraries.places.api.model.Place place)
+            {
+                destination = place.getName().toString();
+                destinationLatLng = place.getLatLng();
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Log.d(TAG,"Place Search Error:==");
+
+            }
+        } );
+
+
+
+
     }
 
     //For Drawerlayout Method
@@ -114,10 +161,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.home:
                 Intent intent = new Intent(Home.this, Home.class);
                 startActivity(intent);
-                break;
-            case R.id.profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.test2,
-                        new profile()).commit();
                 break;
 
             case R.id.allbus:
@@ -132,31 +175,22 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 FragmentManager manager = getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 login loginFragment = new login();
-                transaction.replace(R.id.test2, loginFragment);
+                transaction.replace(R.id.test3, loginFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
                 break;
             case R.id.register:
-                getSupportFragmentManager().beginTransaction().replace(R.id.test2,
+                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
                         new register()).commit();
 
                 break;
 
-            case R.id.ticket:
-                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
-                        new ticket()).commit();
-                break;
             case R.id.contact:
                 getSupportFragmentManager().beginTransaction().replace(R.id.test3,
                         new contact()).commit();
                 break;
-            case R.id.logout:
-                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
-                        new logout()).commit();
-                break;
             case R.id.exit:
-                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
-                        new exit()).commit();
+                finish();
                 break;
 
             case R.id.share:
@@ -317,7 +351,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
 
         switch (view.getId()) {
-            case R.id.search_image_Botton:
+           /* case R.id.search_image_Botton:
                 EditText addressField = (EditText) findViewById(R.id.Location_search);
                 String address = addressField.getText().toString();
 
@@ -351,7 +385,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 } else {
                     Toast.makeText(this, "please write any location name...", Toast.LENGTH_SHORT).show();
                 }
-                break;
+                break;*/
 
 
             case R.id.hospital_image:

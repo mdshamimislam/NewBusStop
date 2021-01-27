@@ -1,34 +1,41 @@
 {
   "project_info": {
-    "project_number": "965341372691",
-    "firebase_url": "https://newbusstop-7239d.firebaseio.com",
-    "project_id": "newbusstop-7239d",
-    "storage_bucket": "newbusstop-7239d.appspot.com"
+    "project_number": "115371217118",
+    "project_id": "newbusstopbd-285610",
+    "storage_bucket": "newbusstopbd-285610.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:965341372691:android:63ffe6aa8bb53a56b0fae6",
+        "mobilesdk_app_id": "1:115371217118:android:2e4e79c4d6dc5843c0f24f",
         "android_client_info": {
           "package_name": "com.shamim.newbusstop"
         }
       },
       "oauth_client": [
         {
-          "client_id": "965341372691-rlbob9lih4cjkpmi29rsgm609b785g52.apps.googleusercontent.com",
+          "client_id": "115371217118-7kh4faqu32cqbujradf8bjkln52efkvi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shamim.newbusstop",
+            "certificate_hash": "edbc3e2e7c77c5a2e2d7a8427c8fb9714f784fb7"
+          }
+        },
+        {
+          "client_id": "115371217118-s7k0mtn8lp1ah76431ot9s4hjc8ifu5d.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA2iVtnmM_m93jbjyVWCINhZ9FjUO4Q3Gw"
+          "current_key": "AIzaSyC_KsOOuuicPbY8obyDXjMhC8vHnnL9F5s"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "965341372691-rlbob9lih4cjkpmi29rsgm609b785g52.apps.googleusercontent.com",
+              "client_id": "115371217118-s7k0mtn8lp1ah76431ot9s4hjc8ifu5d.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

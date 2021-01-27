@@ -6,13 +6,11 @@
 
     <group android:checkableBehavior="single">
         <item
+
             android:id="@+id/home"
             android:icon="@drawable/ic_home"
             android:title="Home" />
-        <item
-            android:id="@+id/profile"
-            android:icon="@drawable/ic_profile"
-            android:title="Profile" />
+
         <item
             android:id="@+id/allbus"
             android:icon="@drawable/ic_allbus"
@@ -40,15 +38,6 @@
 
         </item>
 
-        <item android:title="About Ticket">
-            <menu>
-                <item
-                    android:id="@+id/ticket"
-                    android:icon="@drawable/ic_ticket_icon"
-                    android:title="Ticket" />
-            </menu>
-        </item>
-
 
     </group>
 
@@ -64,20 +53,10 @@
                 android:id="@+id/share"
                 android:icon="@drawable/ic_share"
                 android:title="Share" />
-
-            <item
-                android:id="@+id/logout"
-                android:icon="@drawable/ic_logout"
-                android:title="Logout" />
-
             <item
                 android:id="@+id/exit"
                 android:icon="@drawable/ic_exit"
                 android:title="Exit" />
-
-
-
-
 
         </menu>
     </item>

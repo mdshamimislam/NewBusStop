@@ -5,12 +5,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 public class Flashing extends AppCompatActivity {
-    ConstraintLayout flashing_root;
+    LinearLayout flashing_root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,6 +1,6 @@
 package com.shamim.newbusstop;
 
-public class driver {
+public class Driver {
 
 
 //    public Map<String, Boolean> getStars() {
@@ -10,7 +10,7 @@ public class driver {
 //    public void setStars(Map<String, Boolean> stars) {
 //        this.stars = stars;
 //    }
-    public driver(  String Fullname,  String Email, String Phone, String Password,String License,String NID,String Company) {
+    public Driver(String Fullname, String Email, String Phone, String Password, String License, String NID, String Company, String userType) {
         this.Fullname = Fullname;
         this.Email = Email;
         this.Phone = Phone;
@@ -18,6 +18,7 @@ public class driver {
         this.License = License;
         this.NID = NID;
         this.Company=Company;
+        this.userType=userType;
     }
 
     public String getFullname() {
@@ -83,10 +84,26 @@ public class driver {
 
 
 
-    private String Fullname, Phone, Email, License, Password,NID,Company;
+    private String Fullname;
+    private String Phone;
+    private String Email;
+    private String License;
+    private String Password;
+    private String NID;
+    private String Company;
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    private String userType;
     //public Map<String, Boolean> stars = new HashMap<>();
 
-    public driver() {
+    public Driver() {
     }
 
 

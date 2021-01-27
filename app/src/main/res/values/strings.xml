@@ -3,6 +3,7 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="preference_file_key">busbd_file</string>
 
 
     <string-array name="numbers">
@@ -12,4 +13,6 @@
         <item>Four</item>
         <item>Five</item>
     </string-array>
+    <string name="title_activity_customer__maps">Map</string>
+    <string name="title_activity_customer__maps_">Map</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.shamim.newbusstop.drawer_layout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.shamim.newbusstop.Choose_Option;
-import com.shamim.newbusstop.Driverresgistration;
+import com.shamim.newbusstop.Customer_MapsActivity;
 import com.shamim.newbusstop.Forgotten_password;
 import com.shamim.newbusstop.Home;
 import com.shamim.newbusstop.R;
@@ -31,6 +32,7 @@ public class login extends Fragment implements View.OnClickListener {
 
     FirebaseAuth firebaseAuth;
     FirebaseAuth.AuthStateListener authStateListener;
+    SharedPreferences sharedPref;
 
 
     @Nullable
@@ -39,6 +41,13 @@ public class login extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.login_drawerlayout, container, false);
+
+
+        //localy
+        Context context = getActivity();
+         sharedPref = context.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
 
         login_email = view.findViewById(R.id.login_email);
         login_password = view.findViewById(R.id.login_password);
@@ -78,6 +87,7 @@ public class login extends Fragment implements View.OnClickListener {
                 transaction.addToBackStack(null);
                 transaction.commit();
                 break;
+
 
             case R.id.login_forgotten_password:
                 Intent login_forgotten_password = new Intent(getActivity(), Forgotten_password.class);
@@ -127,7 +137,18 @@ public class login extends Fragment implements View.OnClickListener {
                         if (task.isSuccessful()) {
                             Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
 
-                            Intent intToMain = new Intent(getActivity(), Home.class);
+
+                            //here check user check thhen sharedPreference.
+
+
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("userType","user");
+                            editor.putString("userType","driver");
+
+                            editor.commit();
+
+                            Intent intToMain = new Intent(getActivity(),Customer_MapsActivity.class);
+
                             startActivity(intToMain);
                         } else {
                             Toast.makeText(getActivity(), "Email or Password Wrong", Toast.LENGTH_SHORT).show();

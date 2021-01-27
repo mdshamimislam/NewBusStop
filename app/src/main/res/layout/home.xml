@@ -26,42 +26,27 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             />
+        <androidx.cardview.widget.CardView
+            android:layout_below="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search">
 
-
-        <AutoCompleteTextView
-            android:id="@+id/Location_search"
-            android:layout_marginTop="30dp"
-            android:layout_width="314dp"
-            android:layout_height="30dp"
-            android:background="@drawable/search_bg_map"
-            android:hint="Search Location Here.."
-            android:elevation="5dp"
-            android:gravity="center"
-            android:imeOptions="actionSearch"
-            >
-        </AutoCompleteTextView>
-        <ImageButton
-            android:id="@+id/search_image_Botton"
-            android:layout_marginTop="30dp"
-               android:layout_width="50dp"
-               android:layout_height="30dp"
-               android:layout_alignParentRight="true"
-               android:src="@drawable/ic_baseline_search_24"
-            android:background="@drawable/search_bg_map"
-            android:onClick="search_image_Botton"
-        />
-
-
-
-
+            <fragment android:id="@+id/autocomplete_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                />
+        </androidx.cardview.widget.CardView>
 
         <fragment
-            android:layout_marginTop="60dp"
+
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".Home"
+            android:layout_below="@id/search"
 
             >
 
@@ -103,10 +88,9 @@
 
         <RelativeLayout
             android:id="@+id/test3"
+            android:layout_below="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-
         </RelativeLayout>
 
     </RelativeLayout>
@@ -117,7 +101,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:headerLayout="@layout/drawerlayout_head"
         app:menu="@menu/drawer_layout"/>
 </androidx.drawerlayout.widget.DrawerLayout>
+
+
 </RelativeLayout>
