@@ -17,16 +17,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -52,17 +48,11 @@ import com.google.android.material.navigation.NavigationView;
 import com.shamim.newbusstop.Nearby_Places.GetNearby_Place;
 import com.shamim.newbusstop.drawer_layout.all_bus;
 import com.shamim.newbusstop.drawer_layout.contact;
-import com.shamim.newbusstop.drawer_layout.exit;
 import com.shamim.newbusstop.drawer_layout.login;
-import com.shamim.newbusstop.drawer_layout.logout;
-import com.shamim.newbusstop.drawer_layout.profile;
 import com.shamim.newbusstop.drawer_layout.register;
 import com.shamim.newbusstop.drawer_layout.setting;
-import com.shamim.newbusstop.drawer_layout.ticket;
 
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -83,19 +73,37 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     String TAG = "drawerlayout";
     //navigation bar
     private BottomNavigationView bottomNavigationView;
-    SharedPreferences sharedPref;
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
-        sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+        /*sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
            String usertype= sharedPref.getString("userType","NA");
            String drivertype = sharedPref.getString("userType","NA");
-
-
         Toast.makeText(this,usertype, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this,drivertype, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,drivertype, Toast.LENGTH_SHORT).show();*/
+
+        preferences = getSharedPreferences("BusBD_Info", Context.MODE_PRIVATE);
+        editor = preferences.edit();
+
+        Boolean User_isLogged = preferences.getBoolean("User_isLogged", false);
+        Boolean Driver_islogged = preferences.getBoolean("Driver_isLogged", false);
+        if (User_isLogged) {
+            Intent intent = new Intent(Home.this, Customer_MapsActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else if (Driver_islogged)
+        {
+            Intent intent = new Intent(Home.this, Driver_maps_Activity.class);
+            startActivity(intent);
+            finish();
+        }
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -104,6 +112,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
 
         //For Used Drawerlayout (ToolBar)
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -142,7 +152,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             @Override
             public void onError(@NonNull Status status) {
-                Log.d(TAG,"Place Search Error:==");
+                Log.d(TAG,"Place Search Error:=="+status.getStatusMessage());
 
             }
         } );
@@ -158,13 +168,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         Log.d(TAG, "Navigation drawer");
         Fragment fragment = null;
         switch (item.getItemId()) {
-            case R.id.home:
+            case R.id.home_alluser:
                 Intent intent = new Intent(Home.this, Home.class);
                 startActivity(intent);
                 break;
 
             case R.id.allbus:
-                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new all_bus()).commit();
                 break;
             case R.id.setting:
@@ -178,6 +188,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 transaction.replace(R.id.test3, loginFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
+
+
                 break;
             case R.id.register:
                 getSupportFragmentManager().beginTransaction().replace(R.id.test3,
