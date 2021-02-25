@@ -53,15 +53,12 @@ public class profile extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.profile_change_password:
-
                 Intent intent = new Intent(getActivity(), Home.class);
                 startActivity(intent);
                 break;
 
 
             case R.id.profile_edit:
-
-
 
                 break;
 

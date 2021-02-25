@@ -1,16 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryDark">
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <com.denzcoskun.imageslider.ImageSlider
+        android:id="@+id/image_slider"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="2dp"
+        app:iss_auto_cycle="true"
+        android:gravity="center"
+        android:background="@mipmap/ic_bus"
+        app:iss_delay="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/bus_company_name_contact"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Contact Fragment"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"
-        android:background="@color/White"
-        android:textStyle="bold"/>
+        android:layout_marginTop="50dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_slider" />
 
+    <TextView
+        android:id="@+id/bus_company_name_contact1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bus_company_name_contact" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

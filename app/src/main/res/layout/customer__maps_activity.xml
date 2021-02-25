@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/test2"
     tools:context="com.shamim.newbusstop.Customer_MapsActivity">
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout_customer"
         android:layout_width="match_parent"
@@ -154,4 +154,8 @@
             app:headerLayout="@layout/drawerlayout_head"
             app:menu="@menu/drawer_layout_customer"/>
     </androidx.drawerlayout.widget.DrawerLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/test33"/>
 </RelativeLayout>

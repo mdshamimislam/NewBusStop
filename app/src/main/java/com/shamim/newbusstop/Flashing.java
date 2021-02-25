@@ -1,6 +1,8 @@
 package com.shamim.newbusstop;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.animation.Animation;
@@ -10,11 +12,11 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 public class Flashing extends AppCompatActivity {
     LinearLayout flashing_root;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flashing);
+
         flashing_root = findViewById(R.id.flashing_root);
 
         final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
@@ -34,6 +36,7 @@ public class Flashing extends AppCompatActivity {
                 Log.d("Flashing", "FadeIn onAnimationEnd");
 
                 startActivity(new Intent(Flashing.this, Home.class));
+                finish();
 
             }
 
@@ -45,6 +48,8 @@ public class Flashing extends AppCompatActivity {
         });
 
     }
+
+
 }
 
 

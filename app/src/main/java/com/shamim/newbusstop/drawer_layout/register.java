@@ -23,7 +23,7 @@ public class register extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.register_drawerlayout, container, false);
 
 
-        user = view.findViewById(R.id.user);
+        user = view.findViewById(R.id.customer);
         driver = view.findViewById(R.id.driver);
         admin = view.findViewById(R.id.admin);
         admin1 = view.findViewById(R.id.admin1);
@@ -56,7 +56,7 @@ public class register extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.user:
+            case R.id.customer:
 
                 Intent intent = new Intent(getActivity(), Registration.class);
                 intent.putExtra("user_type","user");
@@ -99,7 +99,7 @@ public class register extends Fragment implements View.OnClickListener {
 
             case R.id.admin1:
                 Intent admin = new Intent(getActivity(), Registration.class);
-                admin.putExtra("user_type","admin1");
+                admin.putExtra("user_type","admin");
                 startActivity(admin);
                 break;
 

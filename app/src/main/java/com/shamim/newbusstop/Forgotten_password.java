@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.shamim.newbusstop.drawer_layout.login;
 
 public class Forgotten_password extends AppCompatActivity {
     EditText email;
@@ -56,13 +55,7 @@ public class Forgotten_password extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
 
-                                Toast.makeText(Forgotten_password.this, "Please Check Your Email", Toast.LENGTH_SHORT).show();
-                                FragmentManager manager = getSupportFragmentManager();
-                                FragmentTransaction transaction = manager.beginTransaction();
-                                login loginFragment = new login();
-                                transaction.replace(R.id.test3, loginFragment);
-                                transaction.addToBackStack(null);
-                                transaction.commit();
+
                             }
                             else {
                                 Toast.makeText(Forgotten_password.this, "Please Enter Your Correct Email", Toast.LENGTH_SHORT).show();

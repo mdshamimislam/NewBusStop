@@ -31,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/user"
+            android:id="@+id/customer"
             android:layout_width="250dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
@@ -64,7 +64,7 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/user" />
+            app:layout_constraintTop_toBottomOf="@+id/customer" />
 
         <Button
             android:id="@+id/admin"

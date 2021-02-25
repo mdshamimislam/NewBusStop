@@ -1,6 +1,8 @@
 package com.shamim.newbusstop;
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -25,7 +27,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -54,16 +55,19 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shamim.newbusstop.drawer_layout.Contact_customer;
 import com.shamim.newbusstop.drawer_layout.all_bus;
 import com.shamim.newbusstop.drawer_layout.contact;
-import com.shamim.newbusstop.drawer_layout.login;
+import com.shamim.newbusstop.drawer_layout.customer_profile;
 import com.shamim.newbusstop.drawer_layout.register;
 import com.shamim.newbusstop.drawer_layout.setting;
+import com.shamim.newbusstop.drawer_layout.traveling_history;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -89,6 +93,7 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
     private Marker pickupMarker;
 
     private SupportMapFragment mapFragment;
+   private String customerId="", fullname,email,phone,profileImage;
 
     private String destination, requestService;
 
@@ -97,14 +102,19 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
     private LinearLayout mDriverInfo;
 
     private ImageView mDriverProfileImage;
+    DatabaseReference profileRef_layoutheader;
 
     private TextView mDriverName, mDriverPhone, mDriverBus;
 
     private RadioGroup mRadioGroup;
-
+    private FirebaseUser currentUser;
+    private  FirebaseAuth mAuth;
     private RatingBar mRatingBar;
     private GoogleApiClient mGoogleApiClient;
     private String TAG = "Customer_Map_Activity";
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +129,11 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
         } else {
             mapFragment.getMapAsync(this);
         }
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
+
 
 
         destinationLatLng = new LatLng(0.0, 0.0);
@@ -135,6 +150,10 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
         setSupportActionBar(toolbar);
         drawer_layout_customer = findViewById(R.id.drawer_layout_customer);
 
+        mAuth = FirebaseAuth.getInstance();
+        customerId = mAuth.getCurrentUser().getUid();
+        profileRef_layoutheader = FirebaseDatabase.getInstance().getReference("Bus Stop BD").child("Registration").child("Customer").child(customerId);
+
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer_layout_customer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -142,6 +161,7 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.drawerlayout_view_customer);
         navigationView.setNavigationItemSelectedListener(this);
+
 
         Log.d(TAG, "Navigation botton");
 
@@ -187,6 +207,18 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
 
         });
 
+       /* mLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(Customer_MapsActivity.this, Login_activity.class);
+                intent.putExtra("UserType", "customer_login");
+                startActivity(intent);
+
+            }
+        });*/
+
 
         Places.initialize(getApplicationContext(), "mykey", Locale.US);
         // Initialize the AutocompleteSupportFragment.
@@ -214,6 +246,9 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
         } );
 
 
+        updateNavHeader();
+
+
     }
 
 
@@ -222,7 +257,7 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
         Log.d(TAG, "Navigation drawer");
         Fragment fragment = null;
         switch (item.getItemId()) {
-            case R.id.home:
+            case R.id.home_customer:
                 Intent intent = new Intent(Customer_MapsActivity.this, Customer_MapsActivity.class);
                 startActivity(intent);
                 break;
@@ -236,22 +271,17 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
                         new setting()).commit();
                 break;
             case R.id.login:
-                FragmentManager manager = getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                login loginFragment = new login();
-                transaction.replace(R.id.test3, loginFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+
                 break;
-            case R.id.register:
-                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
-                        new register()).commit();
+            case R.id.customer_travel_history:
+                getSupportFragmentManager().beginTransaction().replace(R.id.test33,
+                        new traveling_history()).commit();
 
                 break;
 
-            case R.id.contact:
-                getSupportFragmentManager().beginTransaction().replace(R.id.test3,
-                        new contact()).commit();
+            case R.id.contact_customer_with_Bus_owner:
+                getSupportFragmentManager().beginTransaction().replace(R.id.test33,
+                        new Contact_customer()).commit();
                 break;
             case R.id.exit:
                 finish();
@@ -259,6 +289,24 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
 
             case R.id.share:
                 Toast.makeText(this, "Share this app", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.profile_customer:
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.test33,
+                        new customer_profile()).commit();
+                Toast.makeText(this, "Share this app", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.logout_customer:
+
+                SharedPreferences sharedPreferences = getSharedPreferences("BusBD_Info", Context.MODE_PRIVATE);
+                SharedPreferences.Editor edit = sharedPreferences.edit();
+                edit.putBoolean("User_isLogged",false);
+                edit.commit();
+                Intent intentlogout= new Intent(Customer_MapsActivity.this,Home.class);
+                intentlogout.putExtra("login", "customer");
+                startActivity(intentlogout);
+                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
+                finish();
                 break;
 
         }
@@ -268,6 +316,52 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
 
 
     }
+
+    public void updateNavHeader() {
+
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.drawerlayout_view_customer);
+        View headerView = navigationView.getHeaderView(0);
+         final TextView navUsername = headerView.findViewById(R.id.drawer_layout_name_customer);
+        final TextView navUserphone = headerView.findViewById(R.id.drawer_layout_number_customer);
+        final TextView navUserMail = headerView.findViewById(R.id.drawer_layout_email_customer);
+        final ImageView navUserPhot = headerView.findViewById(R.id.drawer_layout_image_customer);
+
+            profileRef_layoutheader.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
+
+                        Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                        if(map.get("fullname")!=null){
+                            fullname =map.get("fullname").toString();
+                            navUsername.setText(fullname);
+                        }
+                        if(map.get("email")!=null){
+                            email=map.get("email").toString();
+                            navUserMail.setText(email);
+                        }
+                        if(map.get("phone")!=null){
+                            phone=map.get("phone").toString();
+                            navUserphone.setText(map.get("phone").toString());
+                        }
+                        if(map.get("profileImageurl")!=null){
+                            profileImage=map.get("profileImageurl").toString();
+                            Glide.with(getApplication()).load(profileImage).into(navUserPhot);
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+
+        }
+
+
+
+
 
 
     private int radius = 1;
@@ -280,13 +374,29 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
         DatabaseReference driverLocation = FirebaseDatabase.getInstance() .getReference("Bus Stop BD").child("Available").child("DriverAvailable");
         Log.d(TAG, " driverLocation==" + driverLocation);
         GeoFire geoFire = new GeoFire(driverLocation);
+        //bydefult
+        //geoQuery = geoFire.queryAtLocation(new GeoLocation(23.707310, 90.415480), radius);
         geoQuery = geoFire.queryAtLocation(new GeoLocation(pickupLocation.latitude, pickupLocation.longitude), radius);
+
         Log.d(TAG, " geoFire==" + geoFire);
         geoQuery.removeAllListeners();
 
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
+                Log.d(TAG,"Key="+key+"  Location="+location.latitude);
+
+                /**
+                 search the details of that bus
+                 BusDetails Database ref:
+                 Find Bus details using the bus key
+                 check if the bus is full or not
+                 if not full get driver details
+                 Send driver notifaction
+                 */
+
+
+
 
                 if (!driverFound && requestBol) {
                     DatabaseReference mCustomerDatabase = FirebaseDatabase.getInstance().getReference("Bus Stop BD").child("Registration").child("Driver").child(key);
@@ -306,7 +416,7 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-
+                            Log.d(TAG,"onCancelled");
                         }
                     });
                     Log.d(TAG, "DriverFound==" + driverFound);
@@ -469,14 +579,13 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
         if (mDriverMarker != null){
             mDriverMarker.remove();
         }
-        mRequest.setText("call Uber");
+        mRequest.setText("Request for The Bus");
         mDriverInfo.setVisibility(View.GONE);
         mDriverName.setText("");
         mDriverPhone.setText("");
         mDriverBus.setText("Destination: --");
         mDriverProfileImage.setImageResource(R.mipmap.ic_default_user);
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -577,17 +686,17 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                    if (map.get("name") != null) {
-                        mDriverName.setText(map.get("name").toString());
+                    if (map.get("fullname") != null) {
+                        mDriverName.setText(map.get("fullname").toString());
                     }
                     if (map.get("phone") != null) {
                         mDriverPhone.setText(map.get("phone").toString());
                     }
-                    if (map.get("Bus") != null) {
-                        mDriverBus.setText(map.get("Bus").toString());
+                    if (map.get("company") != null) {
+                        mDriverBus.setText(map.get("company").toString());
                     }
-                    if (map.get("profileImageUrl") != null) {
-                        Glide.with(getApplication()).load(map.get("profileImageUrl").toString()).into(mDriverProfileImage);
+                    if (map.get("profileImageurl") != null) {
+                        Glide.with(getApplication()).load(map.get("profileImageurl").toString()).into(mDriverProfileImage);
                     }
                     int ratingSum = 0;
                     float ratingsTotal = 0;

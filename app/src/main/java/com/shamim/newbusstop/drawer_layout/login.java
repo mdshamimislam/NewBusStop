@@ -24,17 +24,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.shamim.newbusstop.Customer_MapsActivity;
 import com.shamim.newbusstop.Forgotten_password;
 import com.shamim.newbusstop.Home;
+import com.shamim.newbusstop.Login_activity;
 import com.shamim.newbusstop.R;
 
 public class login extends Fragment implements View.OnClickListener {
-    EditText login_email, login_password;
-    Button login_forgotten_password, login_donot_account, login_login;
 
-    FirebaseAuth firebaseAuth;
-    FirebaseAuth.AuthStateListener authStateListener;
-    SharedPreferences sharedPref;
-
-
+    Button customer,driver,admin,subadmin;
     @Nullable
 
     @Override
@@ -43,34 +38,17 @@ public class login extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.login_drawerlayout, container, false);
 
 
-        //localy
-        Context context = getActivity();
-         sharedPref = context.getSharedPreferences(
-                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        customer = view.findViewById(R.id.customer_login_chooser);
+        driver = view.findViewById(R.id.driver_login_chooser);
+        admin = view.findViewById(R.id.admin_login_chooser);
+        subadmin = view.findViewById(R.id.subadmin_login_chooser);
 
 
-        login_email = view.findViewById(R.id.login_email);
-        login_password = view.findViewById(R.id.login_password);
-        login_forgotten_password = view.findViewById(R.id.login_forgotten_password);
-        login_donot_account = view.findViewById(R.id.login_donot_account);
-        login_login = view.findViewById(R.id.login_login);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        login_forgotten_password.setOnClickListener(this);
-        login_donot_account.setOnClickListener(this);
-        login_login.setOnClickListener(this);
-
-        authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser() != null) {
-
-
-                }
-            }
-        };
-
+        customer.setOnClickListener(this);
+        driver.setOnClickListener(this);
+        admin.setOnClickListener(this);
+        subadmin.setOnClickListener(this);
 
         return view;
     }
@@ -79,85 +57,35 @@ public class login extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.login_donot_account:
-                FragmentManager manager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = manager.beginTransaction();
-                register registerFragment = new register();
-                transaction.replace(R.id.test2, registerFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+            case R.id.customer_login_chooser:
+                Intent customer = new Intent(getActivity(), Login_activity.class);
+                customer.putExtra("login", "customer");
+                startActivity(customer);
+
                 break;
-
-
-            case R.id.login_forgotten_password:
-                Intent login_forgotten_password = new Intent(getActivity(), Forgotten_password.class);
-                startActivity(login_forgotten_password);
+            case R.id.driver_login_chooser:
+                Intent driver = new Intent(getActivity(), Login_activity.class);
+                driver.putExtra("login","driver");
+                startActivity(driver);
 
                 break;
 
-            case R.id.login_login:
+            case R.id.subadmin_login_chooser:
+                Intent subadmin = new Intent(getActivity(), Login_activity.class);
+                subadmin.putExtra("login","subadmin");
+                startActivity(subadmin);
 
-                sign();
+                break;
 
+            case R.id.admin_login_chooser:
+                Intent admin = new Intent(getActivity(), Login_activity.class);
+                admin.putExtra("login","admin");
+                startActivity(admin);
+
+                break;
 
         }
 
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        firebaseAuth.addAuthStateListener(authStateListener);
-
-    }
-
-    private void sign() {
-
-        final String Email = login_email.getText().toString();
-        final String Password = login_password.getText().toString();
-        String emailmatch = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-
-        if (Email.isEmpty()) {
-            Toast.makeText(getActivity(), "Please Enter Your Valid Email", Toast.LENGTH_SHORT).show();
-        }
-        else if (!Email.matches(emailmatch))
-        {
-            Toast.makeText(getActivity(), "Invalid Email", Toast.LENGTH_SHORT).show();
-        }
-        else if (Password.isEmpty())
-        {
-                Toast.makeText(getActivity(), "Please Enter Your Password", Toast.LENGTH_SHORT).show();
-
-        }
-            else {
-
-                firebaseAuth.signInWithEmailAndPassword(Email, Password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getActivity(), "Login Successful", Toast.LENGTH_SHORT).show();
-
-
-                            //here check user check thhen sharedPreference.
-
-
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putString("userType","user");
-                            editor.putString("userType","driver");
-
-                            editor.commit();
-
-                            Intent intToMain = new Intent(getActivity(),Customer_MapsActivity.class);
-
-                            startActivity(intToMain);
-                        } else {
-                            Toast.makeText(getActivity(), "Email or Password Wrong", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-            }
-
-        }
 
 }
-

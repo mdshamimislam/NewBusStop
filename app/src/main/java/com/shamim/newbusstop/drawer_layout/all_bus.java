@@ -15,9 +15,6 @@ public class all_bus extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.all_bus_drawerlayout, container, false);
 
-
-
-
         return view;
 
 

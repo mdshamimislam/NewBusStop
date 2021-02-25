@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.shamim.newbusstop">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -20,8 +19,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".Login_activity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -35,14 +35,16 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Customer_MapsActivity"
-            android:label="@string/title_activity_customer__maps"></activity>
+            android:name=".Driver_maps_Activity"
+            android:label="@string/title_activity_driver_maps_" />
         <activity
-            android:name=".Customer_Maps_Activity"
-            android:label="@string/title_activity_customer__maps_" />
+            android:name=".Customer_MapsActivity"
+            android:label="@string/title_activity_customer__maps" />
+        <activity
+            android:name=".HistoryViewActivity" />
+
         <activity android:name=".Forgotten_password" />
         <activity android:name=".Registration" />
-        <activity android:name=".Choose_Option" />
         <activity android:name=".Flashing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,11 +55,6 @@
         <activity
             android:name=".Home"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

@@ -2,12 +2,11 @@ package com.shamim.newbusstop;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,9 +15,12 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,65 +34,79 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
-import com.shamim.newbusstop.drawer_layout.login;
 
 import java.io.IOException;
 
 public class Registration extends AppCompatActivity implements View.OnClickListener {
-    EditText fullname, email, phone, password, password1, license, nid, company, mEditTextFileName;
-    ImageView driver_reg_image;
+    TextView spinerID_text;
+    EditText fullname, email, phone, password, password1, driving_License, trade_license_of_bus_Company, nid,road_permit_license;
+    ImageView profileImage;
+    Spinner spinnerId_Bus_name;
     String TAG = "Driver Activity";
-    Button cancel, driver_singup, back,user_signup,admin_signup,subadmin_singup;
+    Button cancel, driver_singup, back,user_signup,admin_signup,subadmin_singup,choose_the_image;
     private Uri filepath;
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
-    FirebaseDatabase firebaseDatabase;
-    private StorageTask mUploadTask;
-    private DatabaseReference mDatabaseRef_driver;
-    StorageReference mStorageRef_driver;
-    private DatabaseReference mDatabaseRef_user;
-    StorageReference mStorageRef_user;
+    DatabaseReference driver_Image_Database_Refer,
+            customer_Image_Database_Refer,admin_Image_Database_Refer,
+            subadmin_Image_Database_Refer;
+    StorageReference driverReference ,customerReference,adminReference,subadminReference   ;
     String usertype;
-    //image
+    SharedPreferences sharedPreferences;
+    //spinner
+    String [] busName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driverresgistration);
+        setContentView(R.layout.activity_registration);
+
+
+        sharedPreferences =getSharedPreferences("For_Login_SharedPreferences_file", Context.MODE_PRIVATE);
 
         Intent intent = getIntent();
         usertype=intent.getStringExtra("user_type");
-
 
         fullname = findViewById(R.id.fullname);
         email = findViewById(R.id.email);
         phone = findViewById(R.id.phone);
         password = findViewById(R.id.password);
         password1 = findViewById(R.id.password1);
-        license = findViewById(R.id.license);
+        driving_License = findViewById(R.id.driving_License);
         nid = findViewById(R.id.nid);
-        company = findViewById(R.id.company);
+        spinnerId_Bus_name = findViewById(R.id.spinnerId_Bus_name);
+        spinerID_text= findViewById(R.id.spinerID_text);
+        trade_license_of_bus_Company =findViewById(R.id. trade_license_of_bus_Company);
         cancel = findViewById(R.id.cancel);
         back = findViewById(R.id.back);
+        road_permit_license=findViewById(R.id.road_permit_license);
         driver_singup = findViewById(R.id. driver_singup);
         user_signup = findViewById(R.id. user_signup);
         admin_signup = findViewById(R.id. admin_signup);
-        driver_reg_image = findViewById(R.id.profile_image);
+        profileImage = findViewById(R.id.profile_image);
         subadmin_singup = findViewById(R.id.subadmin_singup);
-        mEditTextFileName= findViewById(R.id.title_text);
+        choose_the_image= findViewById(R.id.choose_the_image);
+
+        busName= getResources().getStringArray(R.array.Bus_Name);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,busName);
+        spinnerId_Bus_name.setAdapter(adapter);
+
 
 
 
 
         if (usertype.equals("user") )
         {
-            license.setVisibility(View.GONE);
+            driving_License.setVisibility(View.GONE);
             admin_signup.setVisibility(View.GONE);
             driver_singup.setVisibility(View.GONE);
             nid.setVisibility(View.GONE);
-            company.setVisibility(View.GONE);
+            trade_license_of_bus_Company.setVisibility(View.GONE);
+            spinnerId_Bus_name.setVisibility(View.GONE);
+            road_permit_license.setVisibility(View.GONE);
+            spinerID_text.setVisibility(View.GONE);
+
 
 
         }
@@ -99,48 +115,60 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
             admin_signup.setVisibility(View.GONE);
             user_signup.setVisibility(View.GONE);
             subadmin_singup.setVisibility(View.GONE);
+            trade_license_of_bus_Company.setVisibility(View.GONE);
+            road_permit_license.setVisibility(View.GONE);
+            spinerID_text.setVisibility(View.VISIBLE);
         }
-        else if(usertype.equals("admin1"))
+        else if(usertype.equals("admin"))
         {
             subadmin_singup.setVisibility(View.GONE);
             user_signup.setVisibility(View.GONE);
             driver_singup.setVisibility(View.GONE);
+            driving_License.setVisibility(View.GONE);
+            trade_license_of_bus_Company.setVisibility(View.VISIBLE);
+            road_permit_license.setVisibility(View.VISIBLE);
+            spinerID_text.setVisibility(View.VISIBLE);
+
+
         }
         else if(usertype.equals("subadmin"))
         {
             admin_signup.setVisibility(View.GONE);
             user_signup.setVisibility(View.GONE);
             driver_singup.setVisibility(View.GONE);
-            license.setVisibility(View.GONE);
+            driving_License.setVisibility(View.GONE);
+            trade_license_of_bus_Company.setVisibility(View.GONE);
+            spinerID_text.setVisibility(View.VISIBLE);
+
         }
-        else if (usertype.equals("admin1"))
-        {
-            subadmin_singup.setVisibility(View.GONE);
-            user_signup.setVisibility(View.GONE);
-            driver_singup.setVisibility(View.GONE);
-        }
+
 
         //image
-        mStorageRef_driver = FirebaseStorage.getInstance().getReference("Driver_Image");
-        mDatabaseRef_driver = FirebaseDatabase.getInstance().getReference("Driver_Image");
+        driver_Image_Database_Refer = FirebaseDatabase.getInstance().getReference("Bus Stop BD").child("Registration").child("Driver");
+        customer_Image_Database_Refer = FirebaseDatabase.getInstance().getReference("Bus Stop BD").child("Registration").child("Customer");
+        admin_Image_Database_Refer = FirebaseDatabase.getInstance().getReference("Bus Stop BD").child("Registration").child("Admin");
+        subadmin_Image_Database_Refer = FirebaseDatabase.getInstance().getReference("Bus Stop BD").child("Registration").child("SubAdmin");
+        driverReference  = FirebaseStorage.getInstance().getReference("Profile_Image").child("Driver");
+        customerReference  = FirebaseStorage.getInstance().getReference("Profile_Image").child("Customer");
+        adminReference  = FirebaseStorage.getInstance().getReference("Profile_Image").child("Admin");
+        subadminReference  = FirebaseStorage.getInstance().getReference("Profile_Image").child("SUB Admin");
 
-        mStorageRef_user = FirebaseStorage.getInstance().getReference("User_Image");
-        mDatabaseRef_user = FirebaseDatabase.getInstance().getReference("User_Image");
+
 
         //register
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("Driver");
         databaseReference = FirebaseDatabase.getInstance().getReference("User");
         databaseReference = FirebaseDatabase.getInstance().getReference("SuB Admin");
-        firebaseAuth = FirebaseAuth.getInstance();
 
 
         cancel.setOnClickListener(this);
         driver_singup.setOnClickListener(this);
-        driver_reg_image.setOnClickListener(this);
+        profileImage.setOnClickListener(this);
         user_signup.setOnClickListener(this);
         admin_signup.setOnClickListener(this);
         subadmin_singup.setOnClickListener(this);
+        choose_the_image.setOnClickListener(this);
 
     }
 
@@ -155,18 +183,19 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.driver_singup:
+
+
                 final String Fullname = fullname.getText().toString();
                 final String Email = email.getText().toString();
                 String emailmatch = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 final String Phone = phone.getText().toString();
                 final String Password = password.getText().toString();
                 String Password1 = password1.getText().toString();
-                final String License = license.getText().toString();
+                final String License = driving_License.getText().toString();
                 final String NID = nid.getText().toString();
-                final String Company = company.getText().toString();
+               final String Bus_name = spinnerId_Bus_name.getSelectedItem().toString();
 
-
-                if (driver_reg_image == null) {
+                if (profileImage == null) {
                     Toast.makeText(Registration.this, "Please Insert Your Image", Toast.LENGTH_SHORT).show();
 
                     Log.d(TAG, "Image");
@@ -233,19 +262,13 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                 } else if (NID.length() != 10) {
                     Toast.makeText(Registration.this, "NID Card Number Must be 10", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "NID Card Number Must be 10" + " " + NID);
-                } else if (Company.isEmpty()) {
-                    Toast.makeText(Registration.this, "Please Enter Your Company Name Of Bus", Toast.LENGTH_SHORT).show();
+                } else if (Bus_name.equals("Select The Option")) {
+                    Toast.makeText(Registration.this, "Please Choose Your Bus Name", Toast.LENGTH_SHORT).show();
 
-                    Log.d(TAG, "Company" + " " + Company);
+                    Log.d(TAG, "Bus_name" + " " + spinnerId_Bus_name);
                 }
                 else {
                     final Loading loading = new Loading(Registration.this);
-                    loading.startLoading();
-
-
-                    upload_image();
-
-                    Log.d(TAG,"else");
 
                     firebaseAuth.createUserWithEmailAndPassword(Email, Password)
                             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -253,50 +276,32 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                                 @Override
                                 public void onComplete(@NonNull final Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        Driver info = new Driver(
-                                                Fullname,
-                                                Email,
-                                                Phone,
-                                                Password,
-                                                License,
-                                                NID,
-                                                Company,
-                                                usertype
 
 
-                                        );
+                                        UploadDriverInformaion();
 
-                                        firebaseDatabase.getInstance().getReference("Bus Stop BD").child("Registration").child("Driver").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                .setValue(info).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        loading.startLoading();
 
+
+                                        Intent driver = new Intent(Registration.this, Login_activity.class);
+                                        driver.putExtra("login", "driver");
+                                        startActivity(driver);
+
+                                        Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
                                             @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-
-                                                FragmentManager manager = getSupportFragmentManager();
-                                                FragmentTransaction transaction = manager.beginTransaction();
-                                                login loginFragment = new login();
-                                                transaction.replace(R.id.test2, loginFragment);
-                                                transaction.addToBackStack(null);
-                                                transaction.commit();
-
-                                                Handler handler = new Handler();
-                                                handler.postDelayed(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        loading.dismissDialog();
-                                                    }
-                                                },5000);
-
-
-                                                Toast.makeText(Registration.this, "Registration is Complete ", Toast.LENGTH_SHORT).show();
-
-
-
+                                            public void run() {
+                                                loading.dismissDialog();
                                             }
+                                        },5000);
 
 
-                                        });
-                                    } else {
+                                        Toast.makeText(Registration.this, "Registration is Complete ", Toast.LENGTH_SHORT).show();
+
+
+                                    }
+
+                                    else {
                                         Toast.makeText(Registration.this, "Already This Email has Registered ", Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -308,7 +313,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
 
                 break;
 
-            case R.id.profile_image:
+            case R.id.choose_the_image:
                 choose_image();
 
                 break;
@@ -321,7 +326,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                 final String User_Password = password.getText().toString();
                 String User_Password1 = password1.getText().toString();
 
-                if (driver_reg_image == null) {
+                if (profileImage == null) {
                     Toast.makeText(Registration.this, "Please Insert Your Image", Toast.LENGTH_SHORT).show();
 
                     Log.d(TAG, "Image");
@@ -380,8 +385,10 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                 }
                 else {
 
+                    final Loading loading = new Loading(Registration.this);
+
                     Log.d(TAG,"else");
-                    user_image();
+                    //user_image();
 
 
                     firebaseAuth.createUserWithEmailAndPassword(User_Email, User_Password)
@@ -390,41 +397,32 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                                 @Override
                                 public void onComplete(@NonNull final Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        User info = new User(
-                                                User_Fullname,
-                                                User_Email,
-                                                User_Phone,
-                                                User_Password
-                                        );
-                                        firebaseDatabase.getInstance().getReference("Bus Stop BD").child("Registration").child("User")
-                                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                .setValue(info).addOnCompleteListener(new OnCompleteListener<Void>() {
 
+
+                                        UploadCustomerInformaion();
+
+                                        loading.startLoading();
+
+
+                                        Intent customer = new Intent(Registration.this, Login_activity.class);
+                                        customer.putExtra("login", "customer");
+                                        startActivity(customer);
+
+                                        Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
                                             @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-
-
-                                                upload_image();
-                                                Intent customerIntent = new Intent(Registration.this,Customer_MapsActivity.class);
-                                                startActivity(customerIntent);
-
-                                               /* FragmentManager manager = getSupportFragmentManager();
-                                                FragmentTransaction transaction = manager.beginTransaction();
-                                                login loginFragment = new login();
-                                                transaction.replace(R.id.test2, loginFragment);
-                                                transaction.addToBackStack(null);
-                                                transaction.commit();*/
-
-
-                                                Toast.makeText(Registration.this, "Registration is Complete ", Toast.LENGTH_SHORT).show();
-
-
-
+                                            public void run() {
+                                                loading.dismissDialog();
                                             }
+                                        },5000);
 
 
-                                        });
-                                    } else {
+                                        Toast.makeText(Registration.this, "Registration is Complete ", Toast.LENGTH_SHORT).show();
+
+
+
+                                    }
+                                    else {
                                         Toast.makeText(Registration.this, "Already This Email has Registered ", Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -442,9 +440,9 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                 final String SubAdmin_Password = password.getText().toString();
                 String SubAdmin_Password1 = password1.getText().toString();
                 final String SubAdmin_NID = nid.getText().toString();
-                final String SubAdmin_Company = company.getText().toString();
+                final String SubAdmin_Company = spinnerId_Bus_name.getSelectedItem().toString();
 
-                if (driver_reg_image == null) {
+                if (profileImage == null) {
                     Toast.makeText(Registration.this, "Please Insert Your Image", Toast.LENGTH_SHORT).show();
 
                     Log.d(TAG, "Image");
@@ -507,13 +505,16 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                 } else if (SubAdmin_NID.length() != 10) {
                     Toast.makeText(Registration.this, "NID Card Number Must be 10", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "NID Card Number Must be 10" + " " + SubAdmin_NID);
-                } else if (SubAdmin_Company.isEmpty()) {
-                    Toast.makeText(Registration.this, "Please Enter Your Company Name Of Bus", Toast.LENGTH_SHORT).show();
-
-                    Log.d(TAG, "Company" + " " + SubAdmin_Company);
                 }
+                else if (SubAdmin_Company.equals("Select The Option")) {
+                    Toast.makeText(Registration.this, "Please Choose Your Bus Name", Toast.LENGTH_SHORT).show();
+
+                    Log.d(TAG, "Bus_name" + " " + spinnerId_Bus_name);
+                }
+
                 else {
 
+                    final Loading loading = new Loading(Registration.this);
 
 
                     Log.d(TAG,"else");
@@ -525,37 +526,31 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                                 @Override
                                 public void onComplete(@NonNull final Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        Admin info = new Admin(
-                                                SubAdmin_Fullname,
-                                                SubAdmin_Email,
-                                                SubAdmin_Phone,
-                                                SubAdmin_Password,
-                                                SubAdmin_NID,
-                                                SubAdmin_Company
-                                        );
-                                        firebaseDatabase.getInstance().getReference("Bus Stop BD").child("Registration").child("Sub Admin").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                .setValue(info).addOnCompleteListener(new OnCompleteListener<Void>() {
 
+
+                                        UploadsubadminInformaion();
+                                        loading.startLoading();
+
+                                        Intent subadmin = new Intent(Registration.this, Login_activity.class);
+                                        subadmin.putExtra("login", "subadmin");
+                                        startActivity(subadmin);
+
+
+                                        Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
                                             @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                upload_image();
-                                                /*FragmentManager manager = getSupportFragmentManager();
-                                                FragmentTransaction transaction = manager.beginTransaction();
-                                                login loginFragment = new login();
-                                                transaction.replace(R.id.test2, loginFragment);
-                                                transaction.addToBackStack(null);
-                                                transaction.commit();*/
-
-
-                                                Toast.makeText(Registration.this, "Registration is Complete ", Toast.LENGTH_SHORT).show();
-
-
-
+                                            public void run() {
+                                                loading.dismissDialog();
                                             }
+                                        }, 5000);
 
 
-                                        });
-                                    } else {
+                                        Toast.makeText(Registration.this, "Registration is Complete ", Toast.LENGTH_SHORT).show();
+
+                                    }
+
+                                    else
+                                        {
                                         Toast.makeText(Registration.this, "Already This Email has Registered ", Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -572,11 +567,11 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                 final String Admin_Phone = phone.getText().toString();
                 final String Admin_Password = password.getText().toString();
                final String Admin_Password1 = password1.getText().toString();
-                final String Admin_License = license.getText().toString();
                 final String Admin_NID = nid.getText().toString();
-                final String Admin_Company = company.getText().toString();
+                final String Road_permit_license = road_permit_license.getText().toString();
+                final String Admin_Company = spinnerId_Bus_name.getSelectedItem().toString();
 
-                if (driver_reg_image == null) {
+                if (profileImage == null) {
                     Toast.makeText(Registration.this, "Please Insert Your Image", Toast.LENGTH_SHORT).show();
 
                     Log.d(TAG, "Image");
@@ -639,13 +634,22 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                 } else if (Admin_NID.length() != 10) {
                     Toast.makeText(Registration.this, "NID Card Number Must be 10", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "NID Card Number Must be 10" + " " + Admin_NID);
-                } else if (Admin_Company.isEmpty()) {
-                    Toast.makeText(Registration.this, "Please Enter Your Company Name Of Bus", Toast.LENGTH_SHORT).show();
-
-                    Log.d(TAG, "Company" + " " + Admin_Company);
                 }
+                else if (Admin_Company.equals("Select The Option")) {
+
+                    Toast.makeText(Registration.this, "Please Choose Your Bus Name", Toast.LENGTH_SHORT).show();
+
+                    Log.d(TAG, "Admin_Company" + " " + spinnerId_Bus_name);
+                }
+                else if (Road_permit_license.isEmpty()) {
+                    Toast.makeText(Registration.this, "Please Enter Your Road Permit License", Toast.LENGTH_SHORT).show();
+
+                    Log.d(TAG, "Road_permit_license" + " " + Road_permit_license);
+                }
+
                 else {
 
+                    final Loading loading = new Loading(Registration.this);
 
 
                     Log.d(TAG,"else");
@@ -657,39 +661,31 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                                 @Override
                                 public void onComplete(@NonNull final Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        Admin info = new Admin(
-                                                Admin_Fullname,
-                                                Admin_Email,
-                                                Admin_Phone,
-                                                Admin_Password,
-                                                Admin_License,
-                                                Admin_NID,
-                                                Admin_Company
-                                        );
-                                        firebaseDatabase.getInstance().getReference("Bus Stop BD").child("Registration").child("Admin").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                .setValue(info).addOnCompleteListener(new OnCompleteListener<Void>() {
 
+                                        UploadAdminInformaion();
+
+                                        loading.startLoading();
+
+                                        Intent admin = new Intent(Registration.this, Login_activity.class);
+                                        admin.putExtra("login","admin");
+                                        startActivity(admin);
+
+
+                                        Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
                                             @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-
-                                               upload_image();
-                                                /* FragmentManager manager = getSupportFragmentManager();
-                                                FragmentTransaction transaction = manager.beginTransaction();
-                                                login loginFragment = new login();
-                                                transaction.replace(R.id.test2, loginFragment);
-                                                transaction.addToBackStack(null);
-                                                transaction.commit();*/
-
-
-                                                Toast.makeText(Registration.this, "Registration is Complete ", Toast.LENGTH_SHORT).show();
-
-
-
+                                            public void run() {
+                                                loading.dismissDialog();
                                             }
+                                        }, 5000);
 
 
-                                        });
-                                    } else {
+                                        Toast.makeText(Registration.this, "Registration is Complete ", Toast.LENGTH_SHORT).show();
+
+
+
+                                    }
+                                    else {
                                         Toast.makeText(Registration.this, "Already This Email has Registered ", Toast.LENGTH_SHORT).show();
                                     }
                                 }
@@ -712,103 +708,231 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-    private void upload_image()
-    {
-        if (filepath !=null) {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            StorageReference fileReference = mStorageRef_driver.child( System.currentTimeMillis()
-                    + "." + getFileExtension(filepath));
+    private void UploadDriverInformaion() {
 
-            mUploadTask = fileReference.putFile(filepath)
+        if (filepath!= null)
+        {
+            final ProgressDialog dialog = new ProgressDialog(this);
+            dialog.setTitle("Image Uploading");
+            dialog.show();
+            final StorageReference uploder = driverReference.child(System.currentTimeMillis() + "."+
+                    getFileExtension(filepath));
+
+            uploder.putFile(filepath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
+                            uploder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
-                                public void run() {
-                                    //mProgressBar.setProgress(0);
+                                public void onSuccess(Uri uri) {
+                                    Model_class_Registration model =new Model_class_Registration(
+                                            fullname.getText().toString(),
+                                            email.getText().toString(),
+                                            phone.getText().toString(),
+                                            password.getText().toString(),
+                                            driving_License.getText().toString(),
+                                            nid.getText().toString(),
+                                            spinnerId_Bus_name.getSelectedItem().toString(),
+                                            usertype,
+                                            uri.toString()
+                                            );
+                                    driver_Image_Database_Refer.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(model);
+                                    Toast.makeText(Registration.this, "Uploaded Successfully", Toast.LENGTH_SHORT).show();
                                 }
-                            }, 500);
-                            Toast.makeText(Registration.this, "Upload successful", Toast.LENGTH_LONG).show();
-                            Driver_Image upload = new Driver_Image(mEditTextFileName.getText().toString().trim(),
-                                    taskSnapshot.getUploadSessionUri().toString());
-                            String uploadId = mDatabaseRef_driver.push().getKey();
-                            mDatabaseRef_driver.child(uploadId).setValue(upload);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(Registration.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
 
+                            profileImage.setImageResource(R.drawable.ic_launcher_background);
                         }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            //mProgressBar.setProgress((int) progress);
-                        }
-                    });
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                    float percent = (100 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                    dialog.setMessage("Uploaded:" + (int) percent + "%");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    dialog.dismiss();
+                    Toast.makeText(Registration.this, "Uploading Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
-        else {
-            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
-
+        else
+        {
+            Toast.makeText(this, "Please Select Image", Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    //image for User method
 
-    private void user_image()
-    {
-        if (filepath !=null) {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            StorageReference fileReference = mStorageRef_user.child( System.currentTimeMillis()
-                    + "." + getFileExtension(filepath));
 
-            mUploadTask = fileReference.putFile(filepath)
+    private void UploadCustomerInformaion() {
+
+        if (filepath!= null)
+        {
+            final ProgressDialog dialog = new ProgressDialog(this);
+            dialog.setTitle("Image Uploading");
+            dialog.show();
+            final StorageReference uploder = customerReference.child(System.currentTimeMillis() + "."+
+                    getFileExtension(filepath));
+
+            uploder.putFile(filepath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
+                            uploder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
-                                public void run() {
-                                    //mProgressBar.setProgress(0);
+                                public void onSuccess(Uri uri) {
+                                    Model_class_Registration model =new Model_class_Registration(
+                                            fullname.getText().toString(),
+                                            email.getText().toString(),
+                                            phone.getText().toString(),
+                                            password.getText().toString(),
+                                            usertype,
+                                            uri.toString()
+                                    );
+                                    customer_Image_Database_Refer.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(model);
+                                    Toast.makeText(Registration.this, "Uploaded Successfully", Toast.LENGTH_SHORT).show();
                                 }
-                            }, 500);
-                            Toast.makeText(Registration.this, "Upload successful", Toast.LENGTH_LONG).show();
-                            Driver_Image upload = new Driver_Image(mEditTextFileName.getText().toString().trim(),
-                                    taskSnapshot.getUploadSessionUri().toString());
-                            String uploadId = mDatabaseRef_user.push().getKey();
-                            mDatabaseRef_user.child(uploadId).setValue(upload);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(Registration.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
 
+                            profileImage.setImageResource(R.drawable.ic_launcher_background);
                         }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            //mProgressBar.setProgress((int) progress);
-                        }
-                    });
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                    float percent = (100 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                    dialog.setMessage("Uploaded:" + (int) percent + "%");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    dialog.dismiss();
+                    Toast.makeText(Registration.this, "Uploading Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
-        else {
-            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
-
+        else
+        {
+            Toast.makeText(this, "Please Select Image", Toast.LENGTH_SHORT).show();
         }
 
     }
+
+
+    private void UploadAdminInformaion() {
+
+        if (filepath!= null)
+        {
+            final ProgressDialog dialog = new ProgressDialog(this);
+            dialog.setTitle("Image Uploading");
+            dialog.show();
+            final StorageReference uploder = adminReference.child(System.currentTimeMillis() + "."+
+                    getFileExtension(filepath));
+
+            uploder.putFile(filepath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            uploder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Model_class_Registration model =new Model_class_Registration(
+                                            fullname.getText().toString(),
+                                            email.getText().toString(),
+                                            phone.getText().toString(),
+                                            password.getText().toString(),
+                                            nid.getText().toString(),
+                                            road_permit_license.getText().toString(),
+                                            spinnerId_Bus_name.getSelectedItem().toString(),
+                                            trade_license_of_bus_Company.getText().toString(),
+                                            usertype,
+                                            uri.toString()
+                                    );
+                                    admin_Image_Database_Refer.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(model);
+                                    Toast.makeText(Registration.this, "Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            profileImage.setImageResource(R.drawable.ic_launcher_background);
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                    float percent = (100 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                    dialog.setMessage("Uploaded:" + (int) percent + "%");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    dialog.dismiss();
+                    Toast.makeText(Registration.this, "Uploading Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else
+        {
+            Toast.makeText(this, "Please Select Image", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+    private void UploadsubadminInformaion() {
+
+        if (filepath!= null)
+        {
+            final ProgressDialog dialog = new ProgressDialog(this);
+            dialog.setTitle("Image Uploading");
+            dialog.show();
+            final StorageReference uploder = subadminReference.child(System.currentTimeMillis() + "."+
+                    getFileExtension(filepath));
+
+            uploder.putFile(filepath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            uploder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Model_class_Registration model =new Model_class_Registration(
+                                            fullname.getText().toString(),
+                                            email.getText().toString(),
+                                            phone.getText().toString(),
+                                            password.getText().toString(),
+                                            nid.getText().toString(),
+                                            spinnerId_Bus_name.getSelectedItem().toString(),                                            usertype,
+                                            uri.toString()
+                                    );
+                                    subadmin_Image_Database_Refer.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(model);
+                                    Toast.makeText(Registration.this, "Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            profileImage.setImageResource(R.drawable.ic_launcher_background);
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                    float percent = (100 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+                    dialog.setMessage("Uploaded:" + (int) percent + "%");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    dialog.dismiss();
+                    Toast.makeText(Registration.this, "Uploading Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else
+        {
+            Toast.makeText(this, "Please Select Image", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
 
     private void choose_image()
     {
@@ -817,6 +941,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         choose.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(choose,"Select Image"),1);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -827,11 +952,12 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         {
             Log.d(TAG,"image"+requestCode+" "+resultCode);
 
-            filepath = data.getData();
+           filepath = data.getData();
+
 
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),filepath);
-                driver_reg_image.setImageBitmap(bitmap);
+                profileImage.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }

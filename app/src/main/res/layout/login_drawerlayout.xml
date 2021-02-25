@@ -4,91 +4,109 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/flashing_background"
-    tools:context="com.shamim.newbusstop.Home">
-    <LinearLayout
+    tools:context="com.shamim.newbusstop.">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:weightSum="6"
-        android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="Login Here"
-        android:textAlignment="center"
-        android:textColor="@android:color/background_light"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:gravity="center_horizontal" />
+        android:background="@drawable/flashing_background"
+        android:orientation="vertical"
+        android:weightSum="4">
 
-    <EditText
-        android:layout_weight="0.6"
-        android:id="@+id/login_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/search_bg_map"
-        android:ems="10"
-        android:textColorHint="@color/Black"
-        android:gravity="center"
-        android:textSize="30dp"
-        android:drawableLeft="@drawable/email_ic"
-        android:hint="Email..."
-        android:inputType="textEmailAddress"
-        android:layout_alignParentLeft="true" />
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="400dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_weight="0.1"
+            android:background="@color/Silver"
+            android:gravity="center"
 
-    <EditText
-        android:layout_weight="0.6"
-        android:id="@+id/login_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
-        android:ems="10"
-        android:hint="Password..."
-        android:textColorHint="@color/Black"
-        android:gravity="center"
-        android:textSize="30dp"
-        android:drawableLeft="@drawable/ic_baseline_lock_24"
-        android:background="@drawable/search_bg_map"
-        android:inputType="textPassword"
-        />
+            android:text="Choose Your Option"
+            android:textColor="@color/White"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <Button
-            android:id="@+id/login_forgotten_password"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="50dp"
-            android:textColor="@color/colorAccent"
+            android:id="@+id/customer_login_chooser"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
             android:layout_weight="0.2"
-            android:background="@android:color/transparent"
-            android:text="Forgotten Password"
-            android:textSize="20sp" />
+            android:background="@color/Red"
+            android:gravity="center"
+            android:onClick="user"
+            android:text="I am User"
+            android:textColor="@color/White"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.44"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text" />
 
         <Button
-        android:layout_weight="0.3"
-        android:id="@+id/login_donot_account"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Don't have an Account ?"
-        android:textColor="@color/White"
-        android:background="@android:color/transparent"
-        android:textSize="15sp"
-        android:gravity="center"
-        android:layout_gravity="center"/>
+            android:id="@+id/driver_login_chooser"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="36dp"
+            android:layout_weight="0.2"
+            android:background="@color/White"
+            android:gravity="center"
+            android:onClick="driver"
+            android:text="I am a Driver"
+            android:textColor="@color/Red"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.44"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/customer_login_chooser" />
 
-    <Button
-        android:layout_weight="0.3"
-        android:id="@+id/login_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@android:color/holo_red_dark"
-        android:text="Login"
-        android:textColor="@android:color/background_light"
-        android:textSize="20sp"
-        />
+        <Button
+            android:id="@+id/admin_login_chooser"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="36dp"
+            android:layout_weight="0.2"
+            android:background="@color/TEAL"
+            android:gravity="center"
+            android:onClick="admin"
+            android:text=" Admin"
+            android:textColor="@color/White"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.44"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/driver_login_chooser" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/subadmin_login_chooser"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="36dp"
+            android:layout_weight="0.2"
+            android:background="@color/White"
+            android:gravity="center"
+            android:onClick="admin"
+            android:text="SUB Admin"
+            android:textColor="@color/Red"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.44"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/admin_login_chooser" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 </RelativeLayout>
