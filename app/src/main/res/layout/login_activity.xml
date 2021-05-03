@@ -97,12 +97,60 @@
                 tools:layout_editor_absoluteX="0dp" />
 
             <Button
-                android:id="@+id/login_not_account"
+                android:id="@+id/login_not_account_user"
                 android:layout_width="405dp"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="24dp"
                 android:layout_weight="0.6"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="Don't have an Account ?"
+                android:textColor="@drawable/flashing_background"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@+id/login_forgotten"
+                tools:layout_editor_absoluteX="6dp"
+                tools:ignore="MissingConstraints" />
+            <Button
+                android:id="@+id/login_not_account_driver"
+                android:layout_width="405dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:layout_weight="0.6"
+                android:visibility="gone"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="Don't have an Account ?"
+                android:textColor="@drawable/flashing_background"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@+id/login_forgotten"
+                tools:layout_editor_absoluteX="6dp"
+                tools:ignore="MissingConstraints" />
+            <Button
+                android:id="@+id/login_not_account_admin"
+                android:layout_width="405dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:layout_weight="0.6"
+                android:visibility="gone"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="Don't have an Account ?"
+                android:textColor="@drawable/flashing_background"
+                android:textSize="15sp"
+                app:layout_constraintTop_toBottomOf="@+id/login_forgotten"
+                tools:layout_editor_absoluteX="6dp"
+                tools:ignore="MissingConstraints" />
+            <Button
+                android:id="@+id/login_not_account_subadmin"
+                android:layout_width="405dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="24dp"
+                android:layout_weight="0.6"
+                android:visibility="gone"
                 android:background="@android:color/transparent"
                 android:gravity="center"
                 android:text="Don't have an Account ?"
@@ -122,7 +170,7 @@
                 android:text="Login"
                 android:textColor="@android:color/background_light"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@+id/login_not_account"
+                app:layout_constraintTop_toBottomOf="@+id/login_not_account_user"
                 tools:layout_editor_absoluteX="0dp" />
 
             <Button

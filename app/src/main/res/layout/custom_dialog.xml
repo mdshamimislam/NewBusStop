@@ -7,7 +7,7 @@
     android:padding="50dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/Green"
+    android:background="@color/Gray"
     >
 
 

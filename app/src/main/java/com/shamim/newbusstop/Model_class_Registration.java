@@ -58,8 +58,17 @@ public class Model_class_Registration {
     }
 
 
-
-
+    public Model_class_Registration(String Email, String Phone, String profileImageurl) {
+        this.Fullname = Fullname;
+        this.Email = Email;
+        this.Phone = Phone;
+        this.Password = Password;
+        this.driving_License = driving_License;
+        this.NID = NID;
+        this.Bus_name = Bus_name;
+        this.userType=userType;
+        this.profileImageurl=profileImageurl;
+    }
 
 
     private String Fullname;
@@ -69,7 +78,7 @@ public class Model_class_Registration {
     private String Password;
     private String NID;
     private String road_permit_License;
-    private String Bus_name;
+    public String Bus_name;
     private String trade_license_of_bus_Company;
     private String profileImageurl;
 
@@ -132,8 +141,10 @@ public class Model_class_Registration {
     public void setDriving_License(String License) {
         this.driving_License = License;
     }
+
+
     public String getBus_name() {
-        return Bus_name;
+       return Bus_name;
     }
 
     public void setBus_name(String bus_name) {

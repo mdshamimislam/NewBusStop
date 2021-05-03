@@ -267,8 +267,8 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
                         new all_bus()).commit();
                 break;
             case R.id.setting_customer:
-                getSupportFragmentManager().beginTransaction().replace(R.id.test2,
-                        new setting()).commit();
+                Intent otpsend = new Intent(Customer_MapsActivity.this, Otp_Send_Activity.class);
+                startActivity(otpsend);
                 break;
             case R.id.login:
 
@@ -374,6 +374,7 @@ public class Customer_MapsActivity extends AppCompatActivity implements Navigati
         DatabaseReference driverLocation = FirebaseDatabase.getInstance() .getReference("Bus Stop BD").child("Available").child("DriverAvailable");
         Log.d(TAG, " driverLocation==" + driverLocation);
         GeoFire geoFire = new GeoFire(driverLocation);
+
         //bydefult
         //geoQuery = geoFire.queryAtLocation(new GeoLocation(23.707310, 90.415480), radius);
         geoQuery = geoFire.queryAtLocation(new GeoLocation(pickupLocation.latitude, pickupLocation.longitude), radius);

@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,7 +34,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.IOException;
 
 public class Registration extends AppCompatActivity implements View.OnClickListener {
@@ -725,6 +723,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                             uploder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
+
                                     Model_class_Registration model =new Model_class_Registration(
                                             fullname.getText().toString(),
                                             email.getText().toString(),
@@ -746,13 +745,29 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                     }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                    float percent = (100 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
-                    dialog.setMessage("Uploaded:" + (int) percent + "%");
+                    final float percent = (100 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.setMessage("Uploaded:" + (int) percent + "%");
+                        }
+                    },8000);
+
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    dialog.dismiss();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.dismiss();
+                        }
+                    },8000);
+
+
                     Toast.makeText(Registration.this, "Uploading Failed", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -783,14 +798,17 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                             uploder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
-                                    Model_class_Registration model =new Model_class_Registration(
-                                            fullname.getText().toString(),
-                                            email.getText().toString(),
-                                            phone.getText().toString(),
-                                            password.getText().toString(),
-                                            usertype,
-                                            uri.toString()
-                                    );
+                                    Model_class_Registration model =new Model_class_Registration();
+
+                                    model.setFullname(fullname.getText().toString());
+                                    model.setEmail(email.getText().toString());
+                                    model.setPhone(phone.getText().toString());
+                                    model.setPassword(password.getText().toString());
+                                    model.setUserType(usertype);
+                                    model.setProfileImageurl(uri.toString());
+
+
+
                                     customer_Image_Database_Refer.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(model);
                                     Toast.makeText(Registration.this, "Uploaded Successfully", Toast.LENGTH_SHORT).show();
                                 }

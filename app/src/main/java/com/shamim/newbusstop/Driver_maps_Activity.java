@@ -70,7 +70,6 @@ public class Driver_maps_Activity extends FragmentActivity implements OnMapReady
     private Button mLogout, mSettings, mRideStatus, mHistory;
     private Switch mRequestSwitch;
     private int status = 0;
-
     private String customerId = "", destination;
     private LatLng destinationLatLng, pickupLatLng;
     private float rideDistance;
@@ -89,6 +88,7 @@ public class Driver_maps_Activity extends FragmentActivity implements OnMapReady
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.driver_maps_activity);
+
         polylines = new ArrayList<>();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -142,16 +142,16 @@ public class Driver_maps_Activity extends FragmentActivity implements OnMapReady
                     case 1:
                         status=2;
                         erasePolylines();
-                        if(destinationLatLng.latitude!=0.0 && destinationLatLng.longitude!=0.0){
+                        if(destinationLatLng.latitude!=0.0 && destinationLatLng.longitude!=0.0)
+                        {
                             getRouteToMarker(destinationLatLng);
                         }
                         mRideStatus.setText("drive completed");
-                        mCustomerInfo.setVisibility(View.GONE);
 
                         break;
                     case 2:
-                        recordRide();
                         endRide();
+                        recordRide();
                         break;
                 }
             }
@@ -448,11 +448,13 @@ public class Driver_maps_Activity extends FragmentActivity implements OnMapReady
     {
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this);
         String userID = FirebaseAuth.getInstance().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Bus Stop BD").child("Available").child("DriverAvailable");
-        GeoFire geoFire = new GeoFire(ref);
-        Log.d(TAG, " USERID: " + userID);
-        geoFire.removeLocation(userID);
-        //mWorkingSwitch.setText("DeActive");
+        if (userID !=null) {
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Bus Stop BD").child("Available").child("DriverAvailable");
+            GeoFire geoFire = new GeoFire(ref);
+            Log.d(TAG, " USERID: " + userID);
+            geoFire.removeLocation(userID);
+            //mWorkingSwitch.setText("DeActive");
+        }
 
     }
 

@@ -93,6 +93,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         Boolean User_isLogged = preferences.getBoolean("User_isLogged", false);
         Boolean Driver_islogged = preferences.getBoolean("Driver_isLogged", false);
+        Boolean Admin_islogged = preferences.getBoolean("Admin_isLogged", false);
+
         if (User_isLogged) {
             Intent intent = new Intent(Home.this, Customer_MapsActivity.class);
             startActivity(intent);
@@ -104,6 +106,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(intent);
             finish();
         }
+        else if (Admin_islogged)
+        {
+            Intent intent = new Intent(Home.this, Admin_Activity.class);
+            startActivity(intent);
+            finish();
+        }
+
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -174,8 +183,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
 
             case R.id.allbus:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new all_bus()).commit();
+                Intent showallbus = new Intent(Home.this, Show_All_Busses_Recycler_View .class);
+                startActivity(showallbus);
                 break;
             case R.id.setting:
                 getSupportFragmentManager().beginTransaction().replace(R.id.test2,
